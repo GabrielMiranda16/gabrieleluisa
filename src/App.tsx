@@ -3,6 +3,7 @@ import EnvelopeOpening from './components/EnvelopeOpening'
 import Hero from './components/Hero'
 import Countdown from './components/Countdown'
 import OurStory from './components/OurStory'
+import Program from './components/Program'
 import TheDay from './components/TheDay'
 import Gallery from './components/Gallery'
 import Footer from './components/Footer'
@@ -20,6 +21,7 @@ export default function App() {
           <Hero />
           <Countdown />
           <OurStory />
+          <Program />
           <TheDay />
           <Gallery />
           <Footer />

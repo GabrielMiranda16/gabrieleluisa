@@ -21,7 +21,7 @@ function Unit({ value, label }: { value: number; label: string }) {
       <div
         style={{
           background: '#2D4A3E',
-          color: '#F7F4EE',
+          color: '#F5F0EA',
           fontFamily: 'Cormorant Garamond, serif',
           fontSize: 'clamp(2rem, 6vw, 3.5rem)',
           fontWeight: 300,
@@ -72,7 +72,7 @@ export default function Countdown() {
       >
         <span className="section-subtitle">Faltam</span>
         <h2 className="section-title">Contagem Regressiva</h2>
-        <div className="divider" />
+        <div className="diamond-divider"><span /></div>
       </motion.div>
 
       <motion.div

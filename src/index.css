@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --cream: #F7F4EE;
+  --cream: #F5F0EA;
   --green-dark: #2D4A3E;
   --green-mid: #4A7A65;
   --green-light: #D4E6DC;
-  --gold: #C4A882;
-  --text: #1C1C1C;
+  --sage: #8B9A6B;
+  --gold: #C9A86C;
+  --text: #2C2420;
   --text-muted: #6B7563;
 }
 
@@ -55,4 +56,34 @@ h1, h2, h3, h4 {
   height: 1px;
   background: var(--gold);
   margin: 0 auto;
+}
+
+.diamond-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.diamond-divider::before,
+.diamond-divider::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.6;
+}
+
+.diamond-divider span {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  display: inline-block;
+  opacity: 0.8;
+}
+
+.script-name {
+  font-family: 'Alex Brush', cursive;
 }

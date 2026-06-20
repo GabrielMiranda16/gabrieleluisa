@@ -17,7 +17,7 @@ export default function TheDay() {
         >
           <span className="section-subtitle">Onde e quando</span>
           <h2 className="section-title">O Grande Dia</h2>
-          <div className="divider" />
+          <div className="diamond-divider"><span /></div>
         </motion.div>
 
         {/* Cards de cerimônia e recepção */}

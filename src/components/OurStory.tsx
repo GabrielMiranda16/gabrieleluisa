@@ -44,7 +44,7 @@ export default function OurStory() {
           <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 300, color: '#F7F4EE', letterSpacing: '0.05em', textAlign: 'center' }}>
             Nossa História
           </h2>
-          <div style={{ width: 60, height: 1, background: '#C4A882' }} />
+          <div className="diamond-divider"><span /></div>
         </motion.div>
 
         {/* Linha do tempo */}

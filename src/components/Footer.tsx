@@ -43,7 +43,7 @@ export default function Footer() {
           Gabriel & Luisa
         </h2>
 
-        <div style={{ width: 60, height: 1, background: '#C4A882' }} />
+        <div className="diamond-divider"><span /></div>
 
         <p
           style={{

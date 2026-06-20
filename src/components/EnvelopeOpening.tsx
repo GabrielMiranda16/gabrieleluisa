@@ -107,11 +107,10 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 >
                   <span
                     style={{
-                      fontFamily: 'Cormorant Garamond, serif',
-                      fontSize: '1rem',
-                      color: '#C4A882',
-                      letterSpacing: '0.05em',
-                      fontWeight: 300,
+                      fontFamily: 'Alex Brush, cursive',
+                      fontSize: '1.1rem',
+                      color: '#C9A86C',
+                      letterSpacing: '0.02em',
                     }}
                   >
                     G&L
