@@ -22,11 +22,11 @@ export default function Hero() {
         playsInline
       />
 
-      {/* Overlay escuro para legibilidade */}
+      {/* Overlay verde escuro para legibilidade */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.6) 100%)',
+          background: 'linear-gradient(to bottom, rgba(45,74,62,0.55) 0%, rgba(45,74,62,0.25) 50%, rgba(45,74,62,0.65) 100%)',
         }}
       />
 
