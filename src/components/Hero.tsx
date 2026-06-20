@@ -22,11 +22,11 @@ export default function Hero() {
         playsInline
       />
 
-      {/* Overlay bokeh-style */}
+      {/* Overlay escuro para legibilidade */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(45,74,62,0.35) 0%, rgba(45,74,62,0.15) 40%, rgba(45,74,62,0.5) 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.6) 100%)',
         }}
       />
 
@@ -40,28 +40,31 @@ export default function Hero() {
             fontSize: '0.6rem',
             letterSpacing: '0.45em',
             textTransform: 'uppercase',
-            color: '#C9A86C',
+            color: '#ffffff',
+            opacity: 0.85,
           }}
         >
           Você está convidado para o casamento de
         </motion.p>
 
-        {/* Nomes em Alex Brush */}
+        {/* Nomes em Cormorant Garamond */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.3, delay: 0.6 }}
           style={{
-            fontFamily: 'Alex Brush, cursive',
-            fontSize: 'clamp(4rem, 14vw, 9rem)',
-            fontWeight: 400,
-            color: '#F5F0EA',
-            lineHeight: 1,
-            marginTop: '0.5rem',
-            textShadow: '0 2px 20px rgba(0,0,0,0.2)',
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: 'clamp(3.5rem, 10vw, 7rem)',
+            fontWeight: 300,
+            color: '#ffffff',
+            letterSpacing: '0.05em',
+            lineHeight: 1.05,
+            marginTop: '1rem',
           }}
         >
-          Gabriel & Luisa
+          Gabriel
+          <span style={{ fontStyle: 'italic' }}> & </span>
+          Luisa
         </motion.h1>
 
         {/* Divisor diamante */}
@@ -69,9 +72,16 @@ export default function Hero() {
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.8, delay: 1.3 }}
-          className="diamond-divider my-5"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            margin: '1.5rem auto',
+          }}
         >
-          <span />
+          <div style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.5)' }} />
+          <div style={{ width: 5, height: 5, background: '#ffffff', transform: 'rotate(45deg)', opacity: 0.8 }} />
+          <div style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.5)' }} />
         </motion.div>
 
         <motion.p
@@ -81,7 +91,7 @@ export default function Hero() {
           style={{
             fontFamily: 'Cormorant Garamond, serif',
             fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
-            color: '#F5F0EA',
+            color: '#ffffff',
             letterSpacing: '0.3em',
             fontWeight: 300,
           }}
@@ -98,7 +108,7 @@ export default function Hero() {
             fontSize: '0.6rem',
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
-            color: 'rgba(245,240,234,0.65)',
+            color: 'rgba(255,255,255,0.65)',
             marginTop: '0.6rem',
           }}
         >
@@ -119,7 +129,7 @@ export default function Hero() {
             onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
           >
             <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
-              <path d="M7 0v18M1 12l6 6 6-6" stroke="#C9A86C" strokeWidth="1" strokeLinecap="round" />
+              <path d="M7 0v18M1 12l6 6 6-6" stroke="rgba(255,255,255,0.7)" strokeWidth="1" strokeLinecap="round" />
             </svg>
           </motion.div>
         </motion.div>
