@@ -25,76 +25,80 @@ const events = [
 
 export default function OurStory() {
   return (
-    <section
-      className="py-24 px-6"
-      style={{ background: '#2D4A3E' }}
-    >
-      <div className="max-w-3xl mx-auto">
+    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
+      <div style={{ maxWidth: 700, margin: '0 auto' }}>
+
         {/* Cabeçalho */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col items-center gap-4 mb-16"
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 64, textAlign: 'center' }}
         >
-          <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C4A882' }}>
+          <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A86C' }}>
             Como tudo começou
           </span>
-          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 300, color: '#F7F4EE', letterSpacing: '0.05em', textAlign: 'center' }}>
+          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 300, color: '#F5F0EA', letterSpacing: '0.05em' }}>
             Nossa História
           </h2>
           <div className="diamond-divider"><span /></div>
         </motion.div>
 
-        {/* Linha do tempo */}
-        <div className="relative">
+        {/* Linha do tempo — coluna central */}
+        <div style={{ position: 'relative' }}>
           {/* Linha vertical */}
-          <div
-            className="absolute left-1/2 top-0 bottom-0 w-px"
-            style={{ background: 'rgba(196,168,130,0.3)', transform: 'translateX(-50%)' }}
-          />
+          <div style={{
+            position: 'absolute',
+            left: '50%',
+            top: 0,
+            bottom: 0,
+            width: 1,
+            background: 'rgba(201,168,108,0.25)',
+            transform: 'translateX(-50%)',
+          }} />
 
-          <div className="flex flex-col gap-16">
-            {events.map((event, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.1 }}
-                className={`flex items-center gap-8 ${i % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
-              >
-                {/* Conteúdo */}
-                <div className={`flex-1 ${i % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                  <span style={{ fontFamily: 'Montserrat', fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#C4A882' }}>
-                    {event.year}
-                  </span>
-                  <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', fontWeight: 300, color: '#F7F4EE', marginTop: 4, marginBottom: 8 }}>
-                    {event.title}
-                  </h3>
-                  <p style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', lineHeight: 1.8, color: 'rgba(247,244,238,0.65)', fontWeight: 300 }}>
-                    {event.description}
-                  </p>
-                </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 56 }}>
+            {events.map((event, i) => {
+              const isLeft = i % 2 === 0
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: i * 0.1 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 32, flexDirection: isLeft ? 'row' : 'row-reverse' }}
+                >
+                  {/* Conteúdo */}
+                  <div style={{ flex: 1, textAlign: isLeft ? 'right' : 'left' }}>
+                    <span style={{ fontFamily: 'Montserrat', fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#C9A86C' }}>
+                      {event.year}
+                    </span>
+                    <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.2rem, 3vw, 1.7rem)', fontWeight: 300, color: '#F5F0EA', marginTop: 4, marginBottom: 8 }}>
+                      {event.title}
+                    </h3>
+                    <p style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', lineHeight: 1.8, color: 'rgba(245,240,234,0.6)', fontWeight: 300 }}>
+                      {event.description}
+                    </p>
+                  </div>
 
-                {/* Ponto central */}
-                <div className="relative flex-shrink-0 z-10">
-                  <div
-                    style={{
-                      width: 14,
-                      height: 14,
+                  {/* Ponto central */}
+                  <div style={{ flexShrink: 0, zIndex: 10 }}>
+                    <div style={{
+                      width: 12,
+                      height: 12,
                       borderRadius: '50%',
-                      background: '#C4A882',
-                      boxShadow: '0 0 0 4px rgba(196,168,130,0.2)',
-                    }}
-                  />
-                </div>
+                      background: '#C9A86C',
+                      boxShadow: '0 0 0 4px rgba(201,168,108,0.2)',
+                    }} />
+                  </div>
 
-                {/* Espaço do outro lado */}
-                <div className="flex-1" />
-              </motion.div>
-            ))}
+                  {/* Lado vazio */}
+                  <div style={{ flex: 1 }} />
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </div>

@@ -53,15 +53,15 @@ const steps = [
 
 export default function Program() {
   return (
-    <section className="py-24 px-6" style={{ background: '#F5F0EA' }}>
-      <div className="max-w-4xl mx-auto">
+    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 8rem' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
         {/* Cabeçalho */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col items-center gap-4 mb-16"
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 64, textAlign: 'center' }}
         >
           <span className="section-subtitle">O que nos espera</span>
           <h2 className="section-title">Programa do Dia</h2>

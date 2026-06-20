@@ -3,8 +3,7 @@ import { motion } from 'framer-motion'
 export default function Footer() {
   return (
     <footer
-      className="py-20 px-6 flex flex-col items-center gap-8"
-      style={{ background: '#F7F4EE', borderTop: '1px solid #D4E6DC' }}
+      style={{ padding: '6rem 1.5rem 8rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32, background: '#F5F0EA', borderTop: '1px solid #D4E6DC' }}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
