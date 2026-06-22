@@ -67,7 +67,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 transition={{ duration: 0.4 }}
                 style={{
                   position: 'absolute',
-                  top: '28%',
+                  top: '38%',
                   left: 0,
                   right: 0,
                   display: 'flex',
@@ -86,7 +86,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                     letterSpacing: '0.4em',
                     textTransform: 'uppercase',
                     color: '#C9A86C',
-                    fontWeight: 400,
+                    fontWeight: 700,
                   }}
                 >
                   Toque para abrir
