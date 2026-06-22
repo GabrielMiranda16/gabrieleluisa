@@ -68,14 +68,13 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 style={{
                   position: 'absolute',
                   top: '28%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
+                  left: 0,
+                  right: 0,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   gap: 12,
                   pointerEvents: 'none',
-                  whiteSpace: 'nowrap',
                 }}
               >
                 <motion.p
@@ -83,12 +82,11 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   transition={{ duration: 2.5, repeat: Infinity }}
                   style={{
                     fontFamily: 'Montserrat, sans-serif',
-                    fontSize: '0.85rem',
+                    fontSize: '0.7rem',
                     letterSpacing: '0.4em',
                     textTransform: 'uppercase',
-                    color: '#ffffff',
-                    fontWeight: 500,
-                    textShadow: '0 2px 12px rgba(0,0,0,0.6)',
+                    color: '#C9A86C',
+                    fontWeight: 400,
                   }}
                 >
                   Toque para abrir
@@ -98,7 +96,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   transition={{ duration: 1.8, repeat: Infinity }}
                   width="18" height="22" viewBox="0 0 16 20" fill="none"
                 >
-                  <path d="M8 0v16M2 10l6 6 6-6" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M8 0v16M2 10l6 6 6-6" stroke="#C9A86C" strokeWidth="1.2" strokeLinecap="round" />
                 </motion.svg>
               </motion.div>
             )}
