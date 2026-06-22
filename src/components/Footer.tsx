@@ -11,7 +11,7 @@ export default function Footer() {
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, textAlign: 'center' }}
       >
         <div style={{ width: 80, height: 80, borderRadius: '50%', border: '1px solid #2D4A3E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.5rem', color: '#2D4A3E', fontWeight: 500 }}>G&L</span>
+          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.5rem', color: '#2D4A3E', fontWeight: 500 }}>L&G</span>
         </div>
 
         <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.04em' }}>
