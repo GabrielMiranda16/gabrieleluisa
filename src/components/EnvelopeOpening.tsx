@@ -67,7 +67,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 transition={{ duration: 0.4 }}
                 style={{
                   position: 'absolute',
-                  top: '44%',
+                  top: '41%',
                   left: 0,
                   right: 0,
                   display: 'flex',
