@@ -40,11 +40,11 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
             playsInline
             onEnded={handleEnded}
             style={{
+              position: 'absolute',
+              inset: 0,
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
-              maxWidth: 600,
-              maxHeight: '80vh',
+              objectFit: 'cover',
             }}
           />
 
