@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface EnvelopeOpeningProps {
@@ -8,6 +8,15 @@ interface EnvelopeOpeningProps {
 export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
   const [phase, setPhase] = useState<'idle' | 'playing' | 'done'>('idle')
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.load()
+    const show = () => { v.currentTime = 0.001 }
+    v.addEventListener('loadedmetadata', show)
+    return () => v.removeEventListener('loadedmetadata', show)
+  }, [])
 
   const handleClick = () => {
     if (phase !== 'idle') return
