@@ -25,7 +25,7 @@ const events = [
 
 export default function OurStory() {
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
+    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 10rem' }}>
       <div style={{ maxWidth: 700, margin: '0 auto' }}>
 
         {/* Cabeçalho */}

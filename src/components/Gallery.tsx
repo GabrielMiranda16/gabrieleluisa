@@ -4,7 +4,7 @@ const placeholders = Array.from({ length: 6 }, (_, i) => i)
 
 export default function Gallery() {
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
+    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 10rem' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
 
         {/* Cabeçalho */}

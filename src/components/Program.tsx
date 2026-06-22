@@ -53,7 +53,7 @@ const steps = [
 
 export default function Program() {
   return (
-    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 8rem' }}>
+    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 10rem' }}>
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
         {/* Cabeçalho */}
         <motion.div
