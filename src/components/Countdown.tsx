@@ -17,15 +17,15 @@ function getTimeLeft() {
 
 function Unit({ value, label }: { value: number; label: string }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
       <div style={{
         background: '#2D4A3E',
         color: '#F5F0EA',
         fontFamily: 'Cormorant Garamond, serif',
-        fontSize: 'clamp(2rem, 6vw, 3.5rem)',
-        fontWeight: 300,
-        width: 'clamp(70px, 16vw, 100px)',
-        height: 'clamp(70px, 16vw, 100px)',
+        fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
+        fontWeight: 500,
+        width: 'clamp(90px, 18vw, 120px)',
+        height: 'clamp(90px, 18vw, 120px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -35,10 +35,11 @@ function Unit({ value, label }: { value: number; label: string }) {
       </div>
       <span style={{
         fontFamily: 'Montserrat, sans-serif',
-        fontSize: '0.55rem',
+        fontSize: '0.7rem',
         letterSpacing: '0.3em',
         textTransform: 'uppercase' as const,
         color: '#6B7563',
+        fontWeight: 500,
       }}>
         {label}
       </span>
@@ -47,7 +48,7 @@ function Unit({ value, label }: { value: number; label: string }) {
 }
 
 const dot = (
-  <div style={{ alignSelf: 'center', marginBottom: 24, color: '#C9A86C', fontSize: '1.5rem', fontFamily: 'Cormorant Garamond' }}>·</div>
+  <div style={{ alignSelf: 'center', marginBottom: 28, color: '#C9A86C', fontSize: '2rem', fontFamily: 'Cormorant Garamond' }}>·</div>
 )
 
 export default function Countdown() {
@@ -59,7 +60,7 @@ export default function Countdown() {
   }, [])
 
   return (
-    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 10rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 48 }}>
+    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 10rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 56 }}>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -68,10 +69,10 @@ export default function Countdown() {
         transition={{ duration: 0.8 }}
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, textAlign: 'center' }}
       >
-        <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#4A7A65' }}>
+        <span style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#4A7A65', fontWeight: 500 }}>
           Faltam
         </span>
-        <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 300, color: '#2D4A3E', letterSpacing: '0.05em' }}>
+        <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.04em' }}>
           Contagem Regressiva
         </h2>
         <div className="diamond-divider"><span /></div>
@@ -98,7 +99,7 @@ export default function Countdown() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1rem, 2.5vw, 1.3rem)', color: '#6B7563', fontStyle: 'italic', textAlign: 'center' }}
+        style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', color: '#6B7563', fontStyle: 'italic', textAlign: 'center', fontWeight: 400 }}
       >
         até o dia mais feliz das nossas vidas
       </motion.p>

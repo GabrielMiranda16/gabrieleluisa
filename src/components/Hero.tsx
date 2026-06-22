@@ -22,27 +22,17 @@ export default function Hero() {
         playsInline
       />
 
-      {/* Overlay verde escuro */}
       <div
         className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(to bottom, rgba(45,74,62,0.6) 0%, rgba(45,74,62,0.3) 50%, rgba(45,74,62,0.7) 100%)',
-        }}
+        style={{ background: 'linear-gradient(to bottom, rgba(45,74,62,0.6) 0%, rgba(45,74,62,0.3) 50%, rgba(45,74,62,0.7) 100%)' }}
       />
 
-      {/* Conteúdo central */}
       <div className="relative z-10 flex flex-col items-center text-center px-6">
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.45em',
-            textTransform: 'uppercase',
-            color: '#ffffff',
-          }}
+          style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#ffffff', fontWeight: 400 }}
         >
           Você está convidado para o casamento de
         </motion.p>
@@ -53,30 +43,29 @@ export default function Hero() {
           transition={{ duration: 1.3, delay: 0.6 }}
           style={{
             fontFamily: 'Cormorant Garamond, serif',
-            fontSize: 'clamp(3.5rem, 10vw, 7rem)',
-            fontWeight: 300,
+            fontSize: 'clamp(4.5rem, 12vw, 8.5rem)',
+            fontWeight: 500,
             color: '#ffffff',
-            letterSpacing: '0.05em',
+            letterSpacing: '0.04em',
             lineHeight: 1.05,
             marginTop: '1rem',
-            textShadow: '0 2px 30px rgba(0,0,0,0.4)',
+            textShadow: '0 2px 30px rgba(0,0,0,0.5)',
           }}
         >
           Gabriel
-          <span style={{ fontStyle: 'italic' }}> & </span>
+          <span style={{ fontStyle: 'italic', fontWeight: 400 }}> & </span>
           Luisa
         </motion.h1>
 
-        {/* Divisor */}
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.8, delay: 1.3 }}
-          style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '1.5rem auto' }}
+          style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '1.8rem auto' }}
         >
-          <div style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.6)' }} />
-          <div style={{ width: 5, height: 5, background: '#ffffff', transform: 'rotate(45deg)' }} />
-          <div style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.6)' }} />
+          <div style={{ width: 50, height: 1, background: 'rgba(255,255,255,0.6)' }} />
+          <div style={{ width: 6, height: 6, background: '#ffffff', transform: 'rotate(45deg)' }} />
+          <div style={{ width: 50, height: 1, background: 'rgba(255,255,255,0.6)' }} />
         </motion.div>
 
         <motion.p
@@ -85,10 +74,10 @@ export default function Hero() {
           transition={{ duration: 1, delay: 1.5 }}
           style={{
             fontFamily: 'Cormorant Garamond, serif',
-            fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)',
+            fontSize: 'clamp(1.3rem, 3vw, 2rem)',
             color: '#ffffff',
             letterSpacing: '0.3em',
-            fontWeight: 300,
+            fontWeight: 500,
             textShadow: '0 1px 12px rgba(0,0,0,0.4)',
           }}
         >
@@ -101,11 +90,12 @@ export default function Hero() {
           transition={{ duration: 1, delay: 1.8 }}
           style={{
             fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.3em',
+            fontSize: '0.75rem',
+            letterSpacing: '0.25em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.8)',
-            marginTop: '0.6rem',
+            color: 'rgba(255,255,255,0.85)',
+            marginTop: '0.7rem',
+            fontWeight: 400,
             textShadow: '0 1px 8px rgba(0,0,0,0.3)',
           }}
         >
@@ -113,7 +103,6 @@ export default function Hero() {
         </motion.p>
       </div>
 
-      {/* Seta de scroll — fora do conteúdo, fixada no fundo da section */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -124,11 +113,11 @@ export default function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+          style={{ cursor: 'pointer' }}
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
         >
-          <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
-            <path d="M7 0v18M1 12l6 6 6-6" stroke="rgba(255,255,255,0.8)" strokeWidth="1" strokeLinecap="round" />
+          <svg width="16" height="26" viewBox="0 0 16 26" fill="none">
+            <path d="M8 0v22M1 15l7 7 7-7" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         </motion.div>
       </motion.div>
