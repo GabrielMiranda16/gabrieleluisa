@@ -67,7 +67,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 transition={{ duration: 0.4 }}
                 style={{
                   position: 'absolute',
-                  top: '38%',
+                  top: '44%',
                   left: 0,
                   right: 0,
                   display: 'flex',
@@ -82,7 +82,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   transition={{ duration: 2.5, repeat: Infinity }}
                   style={{
                     fontFamily: 'Montserrat, sans-serif',
-                    fontSize: '0.7rem',
+                    fontSize: '0.9rem',
                     letterSpacing: '0.4em',
                     textTransform: 'uppercase',
                     color: '#C9A86C',
