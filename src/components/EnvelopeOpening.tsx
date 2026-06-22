@@ -67,7 +67,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 transition={{ duration: 0.4 }}
                 style={{
                   position: 'absolute',
-                  bottom: '10%',
+                  top: '28%',
                   left: '50%',
                   transform: 'translateX(-50%)',
                   display: 'flex',
@@ -75,6 +75,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   alignItems: 'center',
                   gap: 12,
                   pointerEvents: 'none',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <motion.p
@@ -82,11 +83,12 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   transition={{ duration: 2.5, repeat: Infinity }}
                   style={{
                     fontFamily: 'Montserrat, sans-serif',
-                    fontSize: '0.7rem',
+                    fontSize: '0.85rem',
                     letterSpacing: '0.4em',
                     textTransform: 'uppercase',
-                    color: '#C9A86C',
-                    fontWeight: 400,
+                    color: '#ffffff',
+                    fontWeight: 500,
+                    textShadow: '0 2px 12px rgba(0,0,0,0.6)',
                   }}
                 >
                   Toque para abrir
@@ -94,9 +96,9 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                 <motion.svg
                   animate={{ y: [0, 6, 0] }}
                   transition={{ duration: 1.8, repeat: Infinity }}
-                  width="16" height="20" viewBox="0 0 16 20" fill="none"
+                  width="18" height="22" viewBox="0 0 16 20" fill="none"
                 >
-                  <path d="M8 0v16M2 10l6 6 6-6" stroke="#C9A86C" strokeWidth="1.2" strokeLinecap="round" />
+                  <path d="M8 0v16M2 10l6 6 6-6" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
                 </motion.svg>
               </motion.div>
             )}
