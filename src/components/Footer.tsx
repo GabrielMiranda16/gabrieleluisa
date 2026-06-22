@@ -15,7 +15,7 @@ export default function Footer() {
         </div>
 
         <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.04em' }}>
-          Gabriel & Luisa
+          Luisa & Gabriel
         </h2>
 
         <div className="diamond-divider"><span /></div>
@@ -38,7 +38,7 @@ export default function Footer() {
         </div>
 
         <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.2em', color: 'rgba(107,117,99,0.5)', marginTop: 8, fontWeight: 400 }}>
-          Feito com amor · Gabriel & Luisa © 2027
+          Feito com amor · Luisa & Gabriel © 2027
         </p>
       </motion.div>
     </footer>

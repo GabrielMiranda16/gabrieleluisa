@@ -52,9 +52,9 @@ export default function Hero() {
             textShadow: '0 2px 30px rgba(0,0,0,0.5)',
           }}
         >
-          Gabriel
-          <span style={{ fontStyle: 'italic', fontWeight: 400 }}> & </span>
           Luisa
+          <span style={{ fontStyle: 'italic', fontWeight: 400 }}> & </span>
+          Gabriel
         </motion.h1>
 
         <motion.div
