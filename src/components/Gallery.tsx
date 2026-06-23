@@ -1,8 +1,35 @@
 import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 
 const placeholders = Array.from({ length: 6 }, (_, i) => i)
 
 export default function Gallery() {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const updateScale = () => {
+      const containerCenter = container.scrollLeft + container.offsetWidth / 2
+      const cards = container.querySelectorAll<HTMLElement>('.gallery-card')
+      cards.forEach((card) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2
+        const distance = Math.abs(containerCenter - cardCenter)
+        const maxDistance = container.offsetWidth * 0.6
+        const ratio = Math.min(distance / maxDistance, 1)
+        const scale = 1 - ratio * 0.18
+        const opacity = 1 - ratio * 0.55
+        card.style.transform = `scale(${scale})`
+        card.style.opacity = `${opacity}`
+      })
+    }
+
+    container.addEventListener('scroll', updateScale, { passive: true })
+    updateScale()
+    return () => container.removeEventListener('scroll', updateScale)
+  }, [])
+
   return (
     <section style={{ background: '#2D4A3E', padding: '6rem 0 8rem' }}>
 
@@ -23,25 +50,26 @@ export default function Gallery() {
         <div className="diamond-divider"><span /></div>
       </motion.div>
 
-      {/* Carrossel scroll snap */}
-      <div style={{
-        display: 'flex',
-        overflowX: 'auto',
-        scrollSnapType: 'x mandatory',
-        gap: 20,
-        paddingLeft: 'calc(50vw - 140px)',
-        paddingRight: 'calc(50vw - 140px)',
-        paddingBottom: 16,
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none',
-      }}>
+      {/* Carrossel */}
+      <div
+        ref={containerRef}
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          gap: 20,
+          paddingLeft: 'calc(50vw - 140px)',
+          paddingRight: 'calc(50vw - 140px)',
+          paddingBottom: 16,
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          alignItems: 'center',
+        }}
+      >
         {placeholders.map((i) => (
-          <motion.div
+          <div
             key={i}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.06 }}
+            className="gallery-card"
             style={{
               flexShrink: 0,
               width: 280,
@@ -54,8 +82,8 @@ export default function Gallery() {
               alignItems: 'center',
               justifyContent: 'center',
               gap: 12,
-              position: 'relative',
-              overflow: 'hidden',
+              transition: 'transform 0.3s ease, opacity 0.3s ease',
+              willChange: 'transform, opacity',
             }}
           >
             <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
@@ -66,11 +94,10 @@ export default function Gallery() {
             <span style={{ fontFamily: 'Montserrat', fontSize: '0.55rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.25)' }}>
               Em breve
             </span>
-          </motion.div>
+          </div>
         ))}
       </div>
 
-      {/* Indicador de scroll */}
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
