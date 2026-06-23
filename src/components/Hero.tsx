@@ -13,7 +13,7 @@ export default function Hero() {
   useEffect(() => {
     if (window.innerWidth >= 768) return
     const timer = setTimeout(() => {
-      window.scrollTo({ top: 80, behavior: 'smooth' })
+      window.scrollTo({ top: 70, behavior: 'smooth' })
     }, 3000)
     return () => clearTimeout(timer)
   }, [])
