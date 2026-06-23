@@ -15,40 +15,42 @@ export default function FloatingRSVP() {
 
   return (
     <motion.button
-      initial={{ opacity: 0, x: -20 }}
-      animate={visible ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5 }}
       onClick={scrollToRSVP}
-      whileHover={{ scale: 1.04 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       style={{
         position: 'fixed',
-        left: 0,
-        top: '75%',
-        transform: 'translateY(-50%)',
+        bottom: 28,
+        left: 28,
         zIndex: 100,
         background: '#2D4A3E',
-        border: 'none',
-        borderRadius: '0 6px 6px 0',
-        padding: '18px 10px',
+        border: '1px solid rgba(201,168,108,0.4)',
+        borderRadius: 40,
+        padding: '11px 20px',
         cursor: 'pointer',
-        display: 'flex',
+        display: 'inline-flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '2px 4px 20px rgba(0,0,0,0.2)',
+        gap: 8,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
       }}
     >
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="1" y="3" width="14" height="12" rx="1.5" stroke="#C9A86C" strokeWidth="1.4"/>
+        <path d="M1 7h14" stroke="#C9A86C" strokeWidth="1.4"/>
+        <path d="M5 1v4M11 1v4" stroke="#C9A86C" strokeWidth="1.4" strokeLinecap="round"/>
+      </svg>
       <span style={{
         fontFamily: 'Montserrat, sans-serif',
         fontSize: '0.6rem',
         fontWeight: 700,
-        letterSpacing: '0.25em',
+        letterSpacing: '0.2em',
         textTransform: 'uppercase',
         color: '#C9A86C',
-        writingMode: 'vertical-rl',
-        transform: 'rotate(180deg)',
       }}>
-        Confirmar Presença
+        Confirmar
       </span>
     </motion.button>
   )
