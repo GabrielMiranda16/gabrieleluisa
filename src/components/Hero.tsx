@@ -138,7 +138,12 @@ export default function Hero() {
             background: 'rgba(255,255,255,0.1)',
           }}
         >
-          📅 Guardar Data
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ marginRight: 8, verticalAlign: 'middle' }}>
+            <rect x="1" y="3" width="14" height="12" rx="1.5" stroke="white" strokeWidth="1.4"/>
+            <path d="M1 7h14" stroke="white" strokeWidth="1.4"/>
+            <path d="M5 1v4M11 1v4" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+          </svg>
+          Guardar Data
         </motion.a>
       </div>
 
