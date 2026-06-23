@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const events = [
   { year: '4 de Maio de 2023', title: 'O Encontro', description: 'Um momento que mudou tudo. O Senhor nos colocou no mesmo caminho e nossa história começou.' },
@@ -8,8 +9,17 @@ const events = [
 ]
 
 export default function OurStory() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 10rem' }}>
+    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
       <div style={{ maxWidth: 740, margin: '0 auto' }}>
 
         <motion.div
@@ -29,11 +39,47 @@ export default function OurStory() {
         </motion.div>
 
         <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, background: 'rgba(201,168,108,0.25)', transform: 'translateX(-50%)' }} />
+          {/* Linha vertical — só no desktop */}
+          {!isMobile && (
+            <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, background: 'rgba(201,168,108,0.25)', transform: 'translateX(-50%)' }} />
+          )}
+          {/* Linha vertical — mobile (lado esquerdo) */}
+          {isMobile && (
+            <div style={{ position: 'absolute', left: 20, top: 0, bottom: 0, width: 1, background: 'rgba(201,168,108,0.25)' }} />
+          )}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 64 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 48 : 64 }}>
             {events.map((event, i) => {
               const isLeft = i % 2 === 0
+
+              if (isMobile) {
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
+                    style={{ display: 'flex', gap: 24, alignItems: 'flex-start', paddingLeft: 8 }}
+                  >
+                    <div style={{ flexShrink: 0, marginTop: 6, zIndex: 10 }}>
+                      <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#C9A86C', boxShadow: '0 0 0 4px rgba(201,168,108,0.2)' }} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '0.95rem', fontStyle: 'italic', color: 'rgba(201,168,108,0.8)', fontWeight: 400 }}>
+                        {event.year}
+                      </span>
+                      <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.6rem', fontWeight: 500, color: '#F5F0EA', marginTop: 4, marginBottom: 8 }}>
+                        {event.title}
+                      </h3>
+                      <p style={{ fontFamily: 'Montserrat', fontSize: '0.82rem', lineHeight: 1.9, color: 'rgba(245,240,234,0.7)', fontWeight: 400 }}>
+                        {event.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                )
+              }
+
               return (
                 <motion.div
                   key={i}
@@ -44,7 +90,7 @@ export default function OurStory() {
                   style={{ display: 'flex', alignItems: 'center', gap: 32, flexDirection: isLeft ? 'row' : 'row-reverse' }}
                 >
                   <div style={{ flex: 1, textAlign: isLeft ? 'right' : 'left' }}>
-                    <span style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#C9A86C', fontWeight: 500 }}>
+                    <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1rem', fontStyle: 'italic', color: 'rgba(201,168,108,0.8)', fontWeight: 400 }}>
                       {event.year}
                     </span>
                     <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 500, color: '#F5F0EA', marginTop: 6, marginBottom: 10 }}>

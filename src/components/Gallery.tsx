@@ -1,10 +1,11 @@
-import { motion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
 const placeholders = Array.from({ length: 6 }, (_, i) => i)
 
 export default function Gallery() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [lightbox, setLightbox] = useState<number | null>(null)
 
   useEffect(() => {
     const container = containerRef.current
@@ -29,6 +30,15 @@ export default function Gallery() {
     updateScale()
     return () => container.removeEventListener('scroll', updateScale)
   }, [])
+
+  useEffect(() => {
+    if (lightbox !== null) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox])
 
   return (
     <section style={{ background: '#2D4A3E', padding: '6rem 0', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -70,6 +80,7 @@ export default function Gallery() {
           <div
             key={i}
             className="gallery-card"
+            onClick={() => setLightbox(i)}
             style={{
               flexShrink: 0,
               width: 280,
@@ -84,6 +95,7 @@ export default function Gallery() {
               gap: 12,
               transition: 'transform 0.3s ease, opacity 0.3s ease',
               willChange: 'transform, opacity',
+              cursor: 'pointer',
             }}
           >
             <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
@@ -107,6 +119,75 @@ export default function Gallery() {
       >
         As fotos do nosso ensaio serão adicionadas em breve...
       </motion.p>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setLightbox(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.92)',
+              zIndex: 200,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: 'min(90vw, 560px)',
+                aspectRatio: '3/4',
+                background: 'rgba(245,240,234,0.06)',
+                border: '1px solid rgba(201,168,108,0.3)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 12,
+              }}
+            >
+              <svg width="40" height="40" viewBox="0 0 28 28" fill="none">
+                <rect x="2" y="5" width="24" height="18" rx="2" stroke="rgba(201,168,108,0.4)" strokeWidth="1" />
+                <circle cx="18" cy="10" r="2" stroke="rgba(201,168,108,0.4)" strokeWidth="1" />
+                <path d="M2 18L8 13L13 17L18 12L26 19" stroke="rgba(201,168,108,0.4)" strokeWidth="1" strokeLinecap="round" />
+              </svg>
+              <span style={{ fontFamily: 'Montserrat', fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.3)' }}>
+                Em breve
+              </span>
+            </motion.div>
+
+            {/* Botão fechar */}
+            <button
+              onClick={() => setLightbox(null)}
+              style={{
+                position: 'absolute',
+                top: 24,
+                right: 24,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'rgba(245,240,234,0.6)',
+                fontSize: '1.5rem',
+                lineHeight: 1,
+                padding: 8,
+              }}
+            >
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
