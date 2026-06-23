@@ -37,11 +37,6 @@ export default function FloatingRSVP() {
         boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
       }}
     >
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-        <rect x="1" y="3" width="14" height="12" rx="1.5" stroke="#C9A86C" strokeWidth="1.4"/>
-        <path d="M1 7h14" stroke="#C9A86C" strokeWidth="1.4"/>
-        <path d="M5 1v4M11 1v4" stroke="#C9A86C" strokeWidth="1.4" strokeLinecap="round"/>
-      </svg>
       <span style={{
         fontFamily: 'Montserrat, sans-serif',
         fontSize: '0.6rem',
@@ -49,8 +44,10 @@ export default function FloatingRSVP() {
         letterSpacing: '0.2em',
         textTransform: 'uppercase',
         color: '#C9A86C',
+        textAlign: 'center',
+        lineHeight: 1.6,
       }}>
-        Confirmar
+        Confirmar<br />Presença
       </span>
     </motion.button>
   )
