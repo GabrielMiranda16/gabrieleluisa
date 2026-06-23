@@ -11,7 +11,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '100dvh', minHeight: '100vh' }}>
       <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
