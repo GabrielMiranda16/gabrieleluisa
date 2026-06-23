@@ -75,6 +75,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   alignItems: 'center',
                   gap: 12,
                   pointerEvents: 'none',
+                  transform: 'translateX(18px)',
                 }}
               >
                 <motion.p
