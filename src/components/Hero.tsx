@@ -118,7 +118,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.3 }}
+        transition={{ duration: 1, delay: 1.3 }}
         className="absolute bottom-10 left-1/2 z-10"
         style={{ transform: 'translateX(-50%)' }}
       >
