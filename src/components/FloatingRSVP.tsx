@@ -24,7 +24,7 @@ export default function FloatingRSVP() {
       style={{
         position: 'fixed',
         left: 0,
-        top: '50%',
+        top: '65%',
         transform: 'translateY(-50%)',
         zIndex: 100,
         background: '#2D4A3E',
