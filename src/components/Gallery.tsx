@@ -31,7 +31,7 @@ export default function Gallery() {
   }, [])
 
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 0 8rem' }}>
+    <section style={{ background: '#2D4A3E', padding: '6rem 0', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
       {/* Cabeçalho */}
       <motion.div
