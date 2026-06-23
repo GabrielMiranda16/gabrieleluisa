@@ -28,15 +28,6 @@ export default function Footer() {
           Maison Reserva · Salto de Pirapora, SP
         </p>
 
-        <div style={{ display: 'flex', gap: 24, marginTop: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button disabled style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.72rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#C9A86C', background: 'none', border: '1px solid #C9A86C', padding: '12px 28px', cursor: 'not-allowed', opacity: 0.6, fontWeight: 500 }} title="Em breve">
-            Confirmar Presença
-          </button>
-          <button disabled style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.72rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#2D4A3E', background: 'none', border: '1px solid #2D4A3E', padding: '12px 28px', cursor: 'not-allowed', opacity: 0.6, fontWeight: 500 }} title="Em breve">
-            Lista de Presentes
-          </button>
-        </div>
-
         <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.2em', color: 'rgba(107,117,99,0.5)', marginTop: 8, fontWeight: 400 }}>
           Feito com amor · Luisa & Gabriel © 2027
         </p>
