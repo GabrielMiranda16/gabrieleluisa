@@ -15,13 +15,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
     v.load()
     const show = () => { v.currentTime = 0.001 }
     v.addEventListener('loadedmetadata', show)
-    v.addEventListener('loadeddata', show)
-    v.addEventListener('canplay', show)
-    return () => {
-      v.removeEventListener('loadedmetadata', show)
-      v.removeEventListener('loadeddata', show)
-      v.removeEventListener('canplay', show)
-    }
+    return () => v.removeEventListener('loadedmetadata', show)
   }, [])
 
   const handleClick = () => {
@@ -81,7 +75,7 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   alignItems: 'center',
                   gap: 12,
                   pointerEvents: 'none',
-                  transform: 'translateX(40px)',
+                  transform: 'translateX(80px)',
                 }}
               >
                 <motion.p
