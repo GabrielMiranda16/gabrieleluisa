@@ -52,7 +52,7 @@ export default function RSVPGifts() {
           <div className="diamond-divider"><span /></div>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 32 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {cards.map((card, i) => (
             <motion.div
               key={i}
