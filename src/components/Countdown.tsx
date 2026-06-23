@@ -41,7 +41,6 @@ export default function Countdown() {
   const [done, setDone] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const hasPlayed = useRef(false)
-  const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
     const id = setInterval(() => setTime(getTimeLeft()), 1000)
@@ -86,18 +85,17 @@ export default function Countdown() {
       setTimeout(() => revealUnit(0), 300)
     }
 
-    observerRef.current = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasPlayed.current) {
-          startReveal()
-          observerRef.current?.disconnect()
-        }
-      },
-      { threshold: 0.5 }
-    )
+    const onScroll = () => {
+      if (hasPlayed.current) return
+      const rect = section.getBoundingClientRect()
+      if (rect.top <= 10 && rect.top >= -80) {
+        startReveal()
+        window.removeEventListener('scroll', onScroll)
+      }
+    }
 
-    observerRef.current.observe(section)
-    return () => observerRef.current?.disconnect()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const values = [time.days, time.hours, time.minutes, time.seconds]
