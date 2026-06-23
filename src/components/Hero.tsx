@@ -124,7 +124,8 @@ export default function Hero() {
           whileHover={{ scale: 1.04 }}
           style={{
             marginTop: '1.8rem',
-            display: 'inline-block',
+            display: 'inline-flex',
+            alignItems: 'center',
             fontFamily: 'Montserrat, sans-serif',
             fontSize: '0.7rem',
             fontWeight: 700,
