@@ -47,55 +47,95 @@ export default function Countdown() {
     return () => clearInterval(id)
   }, [])
 
+  const revealedCount = useRef(0)
+  const isRevealing = useRef(false)
+  const locked = useRef(false)
+  const scrollAccum = useRef(0)
+  const SCROLL_PER_UNIT = 80
+
+  const revealNext = () => {
+    if (isRevealing.current) return
+    if (revealedCount.current >= 4) return
+
+    const index = revealedCount.current
+    isRevealing.current = true
+    revealedCount.current += 1
+
+    setCenterReveal(index)
+
+    setTimeout(() => {
+      setVisibleUnits(prev => {
+        const next = [...prev]
+        next[index] = true
+        return next
+      })
+    }, 450)
+
+    setTimeout(() => {
+      setCenterReveal(null)
+      isRevealing.current = false
+
+      if (revealedCount.current >= 4) {
+        setTimeout(() => {
+          unlockScroll()
+          setDone(true)
+        }, 300)
+      }
+    }, 900)
+  }
+
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
-    const startReveal = () => {
-      if (hasPlayed.current) return
-      hasPlayed.current = true
-      lockScroll()
-
-      const revealUnit = (index: number) => {
-        if (index > 3) {
-          setTimeout(() => {
-            unlockScroll()
-            setDone(true)
-            setCenterReveal(null)
-          }, 400)
-          return
-        }
-
-        setCenterReveal(index)
-
-        setTimeout(() => {
-          setVisibleUnits(prev => {
-            const next = [...prev]
-            next[index] = true
-            return next
-          })
-        }, 500)
-
-        setTimeout(() => {
-          setCenterReveal(null)
-          setTimeout(() => revealUnit(index + 1), 200)
-        }, 1000)
-      }
-
-      setTimeout(() => revealUnit(0), 300)
-    }
-
     const onScroll = () => {
-      if (hasPlayed.current) return
+      if (locked.current || hasPlayed.current) return
       const rect = section.getBoundingClientRect()
       if (rect.top <= 10 && rect.top >= -80) {
-        startReveal()
+        locked.current = true
+        lockScroll()
+        scrollAccum.current = 0
         window.removeEventListener('scroll', onScroll)
       }
     }
 
+    const onWheel = (e: WheelEvent) => {
+      if (!locked.current || hasPlayed.current) return
+      e.preventDefault()
+      scrollAccum.current += Math.abs(e.deltaY)
+      const shouldReveal = Math.floor(scrollAccum.current / SCROLL_PER_UNIT)
+      if (shouldReveal > revealedCount.current - (isRevealing.current ? 1 : 0)) {
+        revealNext()
+      }
+    }
+
+    let touchStartY = 0
+    const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY }
+    const onTouchMove = (e: TouchEvent) => {
+      if (!locked.current || hasPlayed.current) return
+      e.preventDefault()
+      const delta = touchStartY - e.touches[0].clientY
+      if (delta > 20) {
+        touchStartY = e.touches[0].clientY
+        scrollAccum.current += Math.abs(delta)
+        const shouldReveal = Math.floor(scrollAccum.current / SCROLL_PER_UNIT)
+        if (shouldReveal > revealedCount.current - (isRevealing.current ? 1 : 0)) {
+          revealNext()
+        }
+      }
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+    }
   }, [])
 
   const values = [time.days, time.hours, time.minutes, time.seconds]
