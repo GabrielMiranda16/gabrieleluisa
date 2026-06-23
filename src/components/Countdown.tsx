@@ -15,61 +15,33 @@ function getTimeLeft() {
   }
 }
 
-function Unit({ value, label, visible }: { value: number; label: string; visible: boolean }) {
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
-        >
-          <div style={{
-            background: '#2D4A3E',
-            color: '#F5F0EA',
-            fontFamily: 'Cormorant Garamond, serif',
-            fontSize: 'clamp(1.8rem, 6vw, 4.5rem)',
-            fontWeight: 500,
-            width: 'clamp(60px, 18vw, 120px)',
-            height: 'clamp(60px, 18vw, 120px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            letterSpacing: '0.05em',
-            lineHeight: 1,
-            paddingBottom: '14px',
-          }}>
-            {String(value).padStart(2, '0')}
-          </div>
-          <span style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.7rem',
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase' as const,
-            color: '#6B7563',
-            fontWeight: 500,
-          }}>
-            {label}
-          </span>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
+function lockScroll() {
+  const scrollY = window.scrollY
+  document.body.style.position = 'fixed'
+  document.body.style.top = `-${scrollY}px`
+  document.body.style.width = '100%'
+  document.body.style.overflow = 'hidden'
 }
 
-const dot = (
-  <div style={{ alignSelf: 'center', marginBottom: 28, color: '#C9A86C', fontSize: '2rem', fontFamily: 'Cormorant Garamond' }}>·</div>
-)
+function unlockScroll() {
+  const top = document.body.style.top
+  document.body.style.position = ''
+  document.body.style.top = ''
+  document.body.style.width = ''
+  document.body.style.overflow = ''
+  window.scrollTo(0, parseInt(top || '0') * -1)
+}
+
+const UNITS = ['Dias', 'Horas', 'Minutos', 'Segundos']
 
 export default function Countdown() {
   const [time, setTime] = useState(getTimeLeft())
-  const [visibleCount, setVisibleCount] = useState(0)
+  const [visibleUnits, setVisibleUnits] = useState([false, false, false, false])
+  const [centerReveal, setCenterReveal] = useState<number | null>(null)
+  const [done, setDone] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const hasPlayed = useRef(false)
-  const isLocked = useRef(false)
-  const scrollAccum = useRef(0)
-  const STEP = 80
+  const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
     const id = setInterval(() => setTime(getTimeLeft()), 1000)
@@ -80,92 +52,59 @@ export default function Countdown() {
     const section = sectionRef.current
     if (!section) return
 
-    const onWheel = (e: WheelEvent) => {
+    const startReveal = () => {
       if (hasPlayed.current) return
-      if (!isLocked.current) return
+      hasPlayed.current = true
+      lockScroll()
 
-      e.preventDefault()
-      scrollAccum.current += Math.abs(e.deltaY)
-
-      const step = Math.floor(scrollAccum.current / STEP)
-      const next = Math.min(step + 1, 4)
-      setVisibleCount(prev => {
-        if (next > prev) return next
-        return prev
-      })
-
-      if (scrollAccum.current >= STEP * 4) {
-        hasPlayed.current = true
-        isLocked.current = false
-        setVisibleCount(4)
-      }
-    }
-
-    const onScroll = () => {
-      if (hasPlayed.current) return
-      const rect = section.getBoundingClientRect()
-      if (rect.top <= 80 && rect.bottom > window.innerHeight / 2) {
-        if (!isLocked.current && !hasPlayed.current) {
-          isLocked.current = true
-          scrollAccum.current = 0
+      const revealUnit = (index: number) => {
+        if (index > 3) {
+          setTimeout(() => {
+            unlockScroll()
+            setDone(true)
+            setCenterReveal(null)
+          }, 400)
+          return
         }
-      } else {
-        if (!hasPlayed.current) isLocked.current = false
+
+        setCenterReveal(index)
+
+        setTimeout(() => {
+          setVisibleUnits(prev => {
+            const next = [...prev]
+            next[index] = true
+            return next
+          })
+        }, 500)
+
+        setTimeout(() => {
+          setCenterReveal(null)
+          setTimeout(() => revealUnit(index + 1), 200)
+        }, 1000)
       }
+
+      setTimeout(() => revealUnit(0), 300)
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('wheel', onWheel, { passive: false })
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasPlayed.current) {
+          startReveal()
+          observerRef.current?.disconnect()
+        }
+      },
+      { threshold: 0.5 }
+    )
 
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('wheel', onWheel)
-    }
+    observerRef.current.observe(section)
+    return () => observerRef.current?.disconnect()
   }, [])
 
-  // Touch support
-  useEffect(() => {
-    if (hasPlayed.current) return
-    let touchStartY = 0
-    let touchAccum = 0
+  const values = [time.days, time.hours, time.minutes, time.seconds]
 
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY
-    }
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (!isLocked.current || hasPlayed.current) return
-      e.preventDefault()
-      const delta = touchStartY - e.touches[0].clientY
-      touchAccum += delta
-      touchStartY = e.touches[0].clientY
-
-      const step = Math.floor(Math.abs(touchAccum) / STEP)
-      const next = Math.min(step + 1, 4)
-      setVisibleCount(prev => next > prev ? next : prev)
-
-      if (Math.abs(touchAccum) >= STEP * 4) {
-        hasPlayed.current = true
-        isLocked.current = false
-        setVisibleCount(4)
-      }
-    }
-
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: false })
-
-    return () => {
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
-    }
-  }, [])
-
-  const units = [
-    { value: time.days, label: 'Dias' },
-    { value: time.hours, label: 'Horas' },
-    { value: time.minutes, label: 'Minutos' },
-    { value: time.seconds, label: 'Segundos' },
-  ]
+  const dot = (
+    <div style={{ alignSelf: 'center', marginBottom: 28, color: '#C9A86C', fontSize: '2rem', fontFamily: 'Cormorant Garamond' }}>·</div>
+  )
 
   return (
     <section
@@ -188,23 +127,113 @@ export default function Countdown() {
         <div className="diamond-divider"><span /></div>
       </motion.div>
 
+      {/* Unidades na grade */}
       <div style={{ display: 'flex', gap: 'clamp(4px, 2vw, 32px)', flexWrap: 'nowrap', justifyContent: 'center', alignItems: 'center', minHeight: 160 }}>
-        {units.map((u, i) => (
+        {values.map((val, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 2vw, 32px)' }}>
-            <Unit value={u.value} label={u.label} visible={hasPlayed.current || visibleCount > i} />
-            {i < 3 && (hasPlayed.current || visibleCount > i) && dot}
+            <AnimatePresence>
+              {visibleUnits[i] && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
+                >
+                  <div style={{
+                    background: '#2D4A3E', color: '#F5F0EA',
+                    fontFamily: 'Cormorant Garamond, serif',
+                    fontSize: 'clamp(1.8rem, 6vw, 4.5rem)',
+                    fontWeight: 500,
+                    width: 'clamp(60px, 18vw, 120px)',
+                    height: 'clamp(60px, 18vw, 120px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    letterSpacing: '0.05em', lineHeight: 1, paddingBottom: '14px',
+                  }}>
+                    {String(val).padStart(2, '0')}
+                  </div>
+                  <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#6B7563', fontWeight: 500 }}>
+                    {UNITS[i]}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {i < 3 && visibleUnits[i] && dot}
           </div>
         ))}
       </div>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: hasPlayed.current || visibleCount >= 4 ? 1 : 0 }}
-        transition={{ duration: 0.8 }}
-        style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.5rem, 3vw, 1.8rem)', color: '#6B7563', fontStyle: 'italic', textAlign: 'center', fontWeight: 400 }}
-      >
-        até o dia mais feliz das nossas vidas
-      </motion.p>
+      <AnimatePresence>
+        {(done || visibleUnits[3]) && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.5rem, 3vw, 1.8rem)', color: '#6B7563', fontStyle: 'italic', textAlign: 'center', fontWeight: 400 }}
+          >
+            até o dia mais feliz das nossas vidas
+          </motion.p>
+        )}
+      </AnimatePresence>
+
+      {/* Reveal central — número aparece grande no meio da tela */}
+      <AnimatePresence>
+        {centerReveal !== null && (
+          <motion.div
+            key={centerReveal}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.4, y: 40 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 300,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+              background: 'rgba(245,240,234,0.15)',
+              backdropFilter: 'blur(2px)',
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 20,
+            }}>
+              <div style={{
+                background: '#2D4A3E',
+                color: '#F5F0EA',
+                fontFamily: 'Cormorant Garamond, serif',
+                fontSize: 'clamp(5rem, 20vw, 12rem)',
+                fontWeight: 500,
+                width: 'clamp(180px, 40vw, 320px)',
+                height: 'clamp(180px, 40vw, 320px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                letterSpacing: '0.05em',
+                lineHeight: 1,
+                paddingBottom: '20px',
+              }}>
+                {String(values[centerReveal]).padStart(2, '0')}
+              </div>
+              <span style={{
+                fontFamily: 'Montserrat, sans-serif',
+                fontSize: 'clamp(0.75rem, 2vw, 1rem)',
+                letterSpacing: '0.4em',
+                textTransform: 'uppercase',
+                color: '#2D4A3E',
+                fontWeight: 700,
+              }}>
+                {UNITS[centerReveal]}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
