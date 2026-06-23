@@ -9,6 +9,7 @@ import Gallery from './components/Gallery'
 import RSVPGifts from './components/RSVPGifts'
 import Footer from './components/Footer'
 import MusicPlayer from './components/MusicPlayer'
+import FloatingRSVP from './components/FloatingRSVP'
 
 export default function App() {
   const [opened, setOpened] = useState(false)
@@ -28,6 +29,7 @@ export default function App() {
           <RSVPGifts />
           <Footer />
           <MusicPlayer />
+          <FloatingRSVP />
         </main>
       )}
     </>

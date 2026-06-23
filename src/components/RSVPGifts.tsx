@@ -4,7 +4,7 @@ export default function RSVPGifts() {
   return (
     <>
       {/* Seção Confirmar Presença */}
-      <section style={{ background: '#2D4A3E', padding: '7rem 1.5rem' }}>
+      <section id="confirmar-presenca" style={{ background: '#2D4A3E', padding: '7rem 1.5rem' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
