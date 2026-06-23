@@ -61,9 +61,9 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
           <AnimatePresence>
             {phase === 'idle' && (
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
+                initial={{ opacity: 0, y: 8, x: 80 }}
+                animate={{ opacity: 1, y: 0, x: 80 }}
+                exit={{ opacity: 0, y: -8, x: 80 }}
                 transition={{ duration: 0.4 }}
                 style={{
                   position: 'absolute',
@@ -75,7 +75,6 @@ export default function EnvelopeOpening({ onOpen }: EnvelopeOpeningProps) {
                   alignItems: 'center',
                   gap: 12,
                   pointerEvents: 'none',
-                  transform: 'translateX(80px)',
                 }}
               >
                 <motion.p
