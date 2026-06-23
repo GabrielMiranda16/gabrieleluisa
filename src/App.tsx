@@ -6,6 +6,7 @@ import OurStory from './components/OurStory'
 import Program from './components/Program'
 import TheDay from './components/TheDay'
 import Gallery from './components/Gallery'
+import RSVPGifts from './components/RSVPGifts'
 import Footer from './components/Footer'
 import MusicPlayer from './components/MusicPlayer'
 
@@ -24,6 +25,7 @@ export default function App() {
           <Program />
           <TheDay />
           <Gallery />
+          <RSVPGifts />
           <Footer />
           <MusicPlayer />
         </main>
