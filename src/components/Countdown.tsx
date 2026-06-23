@@ -22,10 +22,10 @@ function Unit({ value, label }: { value: number; label: string }) {
         background: '#2D4A3E',
         color: '#F5F0EA',
         fontFamily: 'Cormorant Garamond, serif',
-        fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
+        fontSize: 'clamp(1.8rem, 6vw, 4.5rem)',
         fontWeight: 500,
-        width: 'clamp(90px, 18vw, 120px)',
-        height: 'clamp(90px, 18vw, 120px)',
+        width: 'clamp(60px, 18vw, 120px)',
+        height: 'clamp(60px, 18vw, 120px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -85,7 +85,7 @@ export default function Countdown() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        style={{ display: 'flex', gap: 'clamp(16px, 4vw, 32px)', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}
+        style={{ display: 'flex', gap: 'clamp(4px, 2vw, 32px)', flexWrap: 'nowrap', justifyContent: 'center', alignItems: 'center' }}
       >
         <Unit value={time.days} label="Dias" />
         {dot}
