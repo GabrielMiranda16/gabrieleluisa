@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 
 const events = [
-  { year: '2020', title: 'O Primeiro Encontro', description: 'Um momento que mudou tudo. O destino nos colocou no mesmo caminho e nossas histórias se encontraram.' },
-  { year: '2021', title: 'O Primeiro Namoro', description: 'Com coragem e amor, demos o passo mais importante: ficamos juntos. E o mundo ganhou mais cor.' },
-  { year: '2023', title: 'O Pedido', description: 'Com o coração acelerado e os olhos cheios de amor, a grande pergunta foi feita. E a resposta foi sim.' },
-  { year: '2027', title: 'O Grande Dia', description: 'Em 21 de abril, celebraremos nosso amor rodeados das pessoas que mais amamos.' },
+  { year: '4 de Maio de 2023', title: 'O Encontro', description: 'Um momento que mudou tudo. O Senhor nos colocou no mesmo caminho e nossa história começou.' },
+  { year: '9 de Setembro de 2023', title: 'O Namoro', description: 'Com direcionamento espiritual e amor, demos o passo mais importante: ficamos juntos. E o mundo ganhou mais cor.' },
+  { year: '20 de Dezembro de 2025', title: 'O Pedido', description: 'Com o coração acelerado e os olhos cheios de amor, a grande pergunta foi feita. E a resposta foi SIM!!!!' },
+  { year: '21 de Abril de 2027', title: 'O Grande Dia', description: 'Em 21 de abril, celebraremos nosso amor rodeados das pessoas que mais amamos.' },
 ]
 
 export default function OurStory() {
