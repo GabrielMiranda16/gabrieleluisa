@@ -101,7 +101,7 @@ export default function Countdown() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', color: '#6B7563', fontStyle: 'italic', textAlign: 'center', fontWeight: 400 }}
+        style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.5rem, 3vw, 1.8rem)', color: '#6B7563', fontStyle: 'italic', textAlign: 'center', fontWeight: 400 }}
       >
         até o dia mais feliz das nossas vidas
       </motion.p>
