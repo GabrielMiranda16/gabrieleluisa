@@ -10,6 +10,14 @@ export default function Hero() {
     }
   }, [])
 
+  useEffect(() => {
+    if (window.innerWidth >= 768) return
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 80, behavior: 'smooth' })
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <section className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '100dvh', minHeight: '100vh' }}>
       <video
