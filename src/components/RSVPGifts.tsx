@@ -1,114 +1,114 @@
 import { motion } from 'framer-motion'
 
-const cards = [
-  {
-    icon: (
-      <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
-        <rect x="3" y="7" width="26" height="22" rx="2" stroke="#2D4A3E" strokeWidth="1.5"/>
-        <path d="M3 13h26" stroke="#2D4A3E" strokeWidth="1.5"/>
-        <path d="M10 3v8M22 3v8" stroke="#2D4A3E" strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M10 20l4 4 8-7" stroke="#C9A86C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
-    label: 'Confirme sua presença',
-    title: 'Confirmar Presença',
-    description: 'Sua presença é o melhor presente que nos poderiam dar. Confirme até 20 de março de 2027.',
-    button: 'Em breve',
-    disabled: true,
-  },
-  {
-    icon: (
-      <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
-        <path d="M16 10V28M8 10h16M6 10h20v4H6zM10 10c0-3 2-5 4-5s2 2 2 2M22 10c0-3-2-5-4-5s-2 2-2 2" stroke="#2D4A3E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M8 14v14h16V14" stroke="#2D4A3E" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-    label: 'Nos abençoe com um presente',
-    title: 'Lista de Presentes',
-    description: 'Se desejar nos presentear, preparamos uma lista com carinho para tornar nosso novo lar ainda mais especial.',
-    button: 'Em breve',
-    disabled: true,
-  },
-]
-
 export default function RSVPGifts() {
   return (
-    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 8rem' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
-
+    <>
+      {/* Seção Confirmar Presença */}
+      <section style={{ background: '#2D4A3E', padding: '7rem 1.5rem' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 64, textAlign: 'center' }}
+          style={{ maxWidth: 640, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 24 }}
         >
-          <span style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#4A7A65', fontWeight: 500 }}>
-            Participe
+          <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'rgba(245,240,234,0.1)', border: '1px solid rgba(201,168,108,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
+              <rect x="3" y="7" width="26" height="22" rx="2" stroke="#C9A86C" strokeWidth="1.5"/>
+              <path d="M3 13h26" stroke="#C9A86C" strokeWidth="1.5"/>
+              <path d="M10 3v8M22 3v8" stroke="#C9A86C" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M10 20l4 4 8-7" stroke="#C9A86C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+
+          <span style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A86C', fontWeight: 500 }}>
+            Sua presença é tudo para nós
           </span>
-          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.04em' }}>
-            Faça Parte do Nosso Dia
+
+          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#F5F0EA', letterSpacing: '0.04em' }}>
+            Confirmar Presença
           </h2>
-          <div className="diamond-divider"><span /></div>
+
+          <div className="diamond-divider" style={{ '--line-color': 'rgba(201,168,108,0.4)' } as React.CSSProperties}><span /></div>
+
+          <p style={{ fontFamily: 'Montserrat', fontSize: '0.88rem', color: 'rgba(245,240,234,0.75)', lineHeight: 1.9, fontWeight: 400 }}>
+            Sua presença é o melhor presente que nos poderiam dar.<br />
+            Confirme até 20 de março de 2027.
+          </p>
+
+          <button
+            disabled
+            style={{
+              marginTop: 8,
+              fontFamily: 'Montserrat, sans-serif',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              color: 'rgba(245,240,234,0.35)',
+              background: 'none',
+              border: '1px solid rgba(245,240,234,0.2)',
+              padding: '14px 40px',
+              cursor: 'not-allowed',
+            }}
+          >
+            Em breve
+          </button>
         </motion.div>
+      </section>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-          {cards.map((card, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.15 }}
-              style={{
-                background: '#fff',
-                border: '1px solid #D4E6DC',
-                padding: '3rem 2.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                gap: 20,
-              }}
-            >
-              <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#F5F0EA', border: '1px solid #D4E6DC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {card.icon}
-              </div>
+      {/* Seção Lista de Presentes */}
+      <section style={{ background: '#F5F0EA', padding: '7rem 1.5rem' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          style={{ maxWidth: 640, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 24 }}
+        >
+          <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#fff', border: '1px solid #D4E6DC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
+              <path d="M16 10V28M8 10h16M6 10h20v4H6z" stroke="#2D4A3E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 14v14h12V14" stroke="#2D4A3E" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M16 10c0 0-1-5 3-5s3 3 3 5M16 10c0 0 1-5-3-5s-3 3-3 5" stroke="#C9A86C" strokeWidth="1.3" strokeLinecap="round"/>
+            </svg>
+          </div>
 
-              <span style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#8B9A6B', fontWeight: 500 }}>
-                {card.label}
-              </span>
+          <span style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#4A7A65', fontWeight: 500 }}>
+            Nos abençoe com um presente
+          </span>
 
-              <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.02em' }}>
-                {card.title}
-              </h3>
+          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.04em' }}>
+            Lista de Presentes
+          </h2>
 
-              <p style={{ fontFamily: 'Montserrat', fontSize: '0.82rem', color: '#6B7563', lineHeight: 1.8, fontWeight: 400 }}>
-                {card.description}
-              </p>
+          <div className="diamond-divider"><span /></div>
 
-              <button
-                disabled={card.disabled}
-                style={{
-                  marginTop: 8,
-                  fontFamily: 'Montserrat, sans-serif',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.3em',
-                  textTransform: 'uppercase',
-                  color: card.disabled ? 'rgba(45,74,62,0.4)' : '#2D4A3E',
-                  background: 'none',
-                  border: `1px solid ${card.disabled ? 'rgba(45,74,62,0.25)' : '#2D4A3E'}`,
-                  padding: '14px 36px',
-                  cursor: card.disabled ? 'not-allowed' : 'pointer',
-                }}
-              >
-                {card.button}
-              </button>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+          <p style={{ fontFamily: 'Montserrat', fontSize: '0.88rem', color: '#6B7563', lineHeight: 1.9, fontWeight: 400 }}>
+            Se desejar nos presentear, preparamos uma lista com carinho<br />
+            para tornar nosso novo lar ainda mais especial.
+          </p>
+
+          <button
+            disabled
+            style={{
+              marginTop: 8,
+              fontFamily: 'Montserrat, sans-serif',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              color: 'rgba(45,74,62,0.35)',
+              background: 'none',
+              border: '1px solid rgba(45,74,62,0.2)',
+              padding: '14px 40px',
+              cursor: 'not-allowed',
+            }}
+          >
+            Em breve
+          </button>
+        </motion.div>
+      </section>
+    </>
   )
 }
