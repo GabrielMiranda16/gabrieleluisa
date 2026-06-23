@@ -14,7 +14,7 @@ export default function Hero() {
     if (window.innerWidth >= 768) return
     const timer = setTimeout(() => {
       window.scrollTo({ top: 70, behavior: 'smooth' })
-    }, 3000)
+    }, 1500)
     return () => clearTimeout(timer)
   }, [])
 
