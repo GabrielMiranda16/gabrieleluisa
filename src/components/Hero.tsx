@@ -113,6 +113,33 @@ export default function Hero() {
         >
           Maison Reserva · Salto de Pirapora, SP
         </motion.p>
+
+        <motion.a
+          href="https://www.google.com/calendar/render?action=TEMPLATE&text=Casamento+Luisa+%26+Gabriel&dates=20270421T160000/20270422T000000&details=Cer%C3%AAmonia+%C3%A0s+16h+%7C+Maison+Reserva%2C+Salto+de+Pirapora+-+SP&location=Maison+Reserva%2C+Estrada+Dr.+Celso+Charuri%2C+km+3.67+B%2C+Salto+de+Pirapora+-+SP"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 2.1 }}
+          whileHover={{ scale: 1.04 }}
+          style={{
+            marginTop: '1.8rem',
+            display: 'inline-block',
+            fontFamily: 'Montserrat, sans-serif',
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            color: '#ffffff',
+            border: '1px solid rgba(255,255,255,0.7)',
+            padding: '14px 32px',
+            textDecoration: 'none',
+            backdropFilter: 'blur(4px)',
+            background: 'rgba(255,255,255,0.1)',
+          }}
+        >
+          📅 Guardar Data
+        </motion.a>
       </div>
 
       <motion.div
