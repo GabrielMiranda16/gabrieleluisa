@@ -30,6 +30,7 @@ function Unit({ value, label }: { value: number; label: string }) {
         alignItems: 'center',
         justifyContent: 'center',
         letterSpacing: '0.05em',
+        lineHeight: 1,
       }}>
         {String(value).padStart(2, '0')}
       </div>
