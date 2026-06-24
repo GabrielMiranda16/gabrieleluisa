@@ -4,26 +4,32 @@ const hotels = [
   {
     category: 'Premium',
     name: 'Novotel Sorocaba',
-    address: 'Av. Prof. Izoraida Marques Peres, 770 — Parque Campolim, Sorocaba',
+    address: 'Av. Prof. Izoraida Marques Peres, 770 — Parque Campolim',
     distance: '~50 km do local',
     stars: 4,
-    link: 'https://maps.google.com/?q=Novotel+Sorocaba',
+    phone: '(15) 3500-1850',
+    map: 'https://maps.google.com/?q=Novotel+Sorocaba',
+    site: 'https://all.accor.com/hotel/9456/index.pt.shtml',
   },
   {
     category: 'Conforto',
     name: 'Ibis Styles Sorocaba Santa Rosalia',
-    address: 'Sorocaba — SP',
+    address: 'Av. Dom Aguirre, 3065 — Santa Rosália',
     distance: '~50 km do local',
     stars: 3,
-    link: 'https://maps.google.com/?q=Ibis+Styles+Sorocaba+Santa+Rosalia',
+    phone: '(15) 3131-1300',
+    map: 'https://maps.google.com/?q=Ibis+Styles+Sorocaba+Santa+Rosalia',
+    site: 'https://all.accor.com/hotel/B0V0/index.pt.shtml',
   },
   {
     category: 'Econômico',
     name: 'Ibis Sorocaba',
-    address: 'R. Maria Aparecida Pessotti Milego, 290 — Parque Campolim, Sorocaba',
+    address: 'R. Maria Aparecida Pessotti Milego, 290 — Parque Campolim',
     distance: '~50 km do local',
     stars: 3,
-    link: 'https://maps.google.com/?q=Ibis+Sorocaba',
+    phone: '(15) 3231-5888',
+    map: 'https://maps.google.com/?q=Ibis+Sorocaba',
+    site: 'https://all.accor.com/hotel/2907/index.pt.shtml',
   },
 ]
 
@@ -110,15 +116,21 @@ export default function Lodging() {
                 <p style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', color: 'rgba(245,240,234,0.55)', lineHeight: 1.7, fontWeight: 400, margin: 0 }}>
                   {hotel.address}
                 </p>
+                <a
+                  href={`tel:${hotel.phone.replace(/\D/g, '')}`}
+                  style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', color: 'rgba(201,168,108,0.7)', fontWeight: 400, textDecoration: 'none', marginTop: 2 }}
+                >
+                  {hotel.phone}
+                </a>
               </div>
 
-              {/* Distância + botão */}
-              <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 14 }}>
+              {/* Distância + botões */}
+              <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
                 <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1rem', fontStyle: 'italic', color: 'rgba(201,168,108,0.7)' }}>
                   {hotel.distance}
                 </span>
                 <a
-                  href={hotel.link}
+                  href={hotel.site}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -134,7 +146,23 @@ export default function Lodging() {
                     whiteSpace: 'nowrap' as const,
                   }}
                 >
-                  Ver no Mapa
+                  Site do Hotel
+                </a>
+                <a
+                  href={hotel.map}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: 'Montserrat, sans-serif',
+                    fontSize: '0.6rem',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(245,240,234,0.45)',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap' as const,
+                  }}
+                >
+                  Ver no Mapa →
                 </a>
               </div>
             </motion.div>
