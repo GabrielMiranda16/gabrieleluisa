@@ -70,9 +70,6 @@ export default function TheDay() {
               <p style={{ fontFamily: 'Montserrat', fontSize: '0.85rem', color: '#6B7563', lineHeight: 1.8, fontWeight: 400 }}>
                 Salto de Pirapora — SP
               </p>
-              <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1rem', color: '#C9A86C', fontStyle: 'italic', marginTop: 4 }}>
-                1h30 de São Paulo
-              </p>
             </div>
 
           </div>
