@@ -90,14 +90,26 @@ export default function Countdown() {
     const section = sectionRef.current
     if (!section) return
 
+    const forceUnlock = () => {
+      locked.current = false
+      hasPlayed.current = true
+      unlockScroll()
+      setDone(true)
+      setVisibleUnits([true, true, true, true])
+      setCenterReveal(null)
+    }
+
+    let safetyTimer: ReturnType<typeof setTimeout>
+
     const onScroll = () => {
       if (locked.current || hasPlayed.current) return
       const rect = section.getBoundingClientRect()
-      if (rect.top <= 10 && rect.top >= -80) {
+      if (rect.top <= 50 && rect.top >= -200) {
         locked.current = true
         lockScroll()
         scrollAccum.current = 0
         window.removeEventListener('scroll', onScroll)
+        safetyTimer = setTimeout(forceUnlock, 12000)
       }
     }
 
@@ -137,6 +149,7 @@ export default function Countdown() {
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
+      clearTimeout(safetyTimer)
     }
   }, [])
 
