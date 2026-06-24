@@ -2,12 +2,24 @@ import { motion } from 'framer-motion'
 
 const hotels = [
   {
+    category: 'Luxo',
+    name: 'Grand Hotel Royal Sorocaba',
+    address: 'R. Dr. Álvaro Soares, 451 — Centro, Sorocaba',
+    distance: '~32 km · ~30 min do local',
+    stars: 5,
+    phone: '(15) 2102-8900',
+    photo: 'https://www.grandhotelroyal.com.br/wp-content/uploads/2021/03/banner-1.jpg',
+    map: 'https://maps.google.com/?q=Grand+Hotel+Royal+Sorocaba',
+    site: 'https://www.grandhotelroyal.com.br',
+  },
+  {
     category: 'Premium',
     name: 'Novotel Sorocaba',
     address: 'Av. Prof. Izoraida Marques Peres, 770 — Parque Campolim',
     distance: '~28 km · ~25 min do local',
     stars: 4,
     phone: '(15) 3500-1850',
+    photo: 'https://www.ahstatic.com/photos/9456_ho_00_p_1024x768.jpg',
     map: 'https://maps.google.com/?q=Novotel+Sorocaba',
     site: 'https://all.accor.com/hotel/9456/index.pt.shtml',
   },
@@ -18,6 +30,7 @@ const hotels = [
     distance: '~30 km · ~27 min do local',
     stars: 3,
     phone: '(15) 3131-1300',
+    photo: 'https://www.ahstatic.com/photos/b0v0_ho_00_p_1024x768.jpg',
     map: 'https://maps.google.com/?q=Ibis+Styles+Sorocaba+Santa+Rosalia',
     site: 'https://all.accor.com/hotel/B0V0/index.pt.shtml',
   },
@@ -28,6 +41,7 @@ const hotels = [
     distance: '~28 km · ~25 min do local',
     stars: 3,
     phone: '(15) 3231-5888',
+    photo: 'https://www.ahstatic.com/photos/2907_ho_00_p_1024x768.jpg',
     map: 'https://maps.google.com/?q=Ibis+Sorocaba',
     site: 'https://all.accor.com/hotel/2907/index.pt.shtml',
   },
@@ -94,12 +108,13 @@ export default function Lodging() {
                 flexWrap: 'wrap' as const,
               }}
             >
-              {/* Ícone */}
-              <div style={{ flexShrink: 0, width: 64, height: 64, borderRadius: '50%', background: 'rgba(201,168,108,0.1)', border: '1px solid rgba(201,168,108,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A86C" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path d="M9 22V12h6v10" />
-                </svg>
+              {/* Foto */}
+              <div style={{ flexShrink: 0, width: 'clamp(100px, 20vw, 160px)', height: 'clamp(70px, 14vw, 110px)', overflow: 'hidden', border: '1px solid rgba(201,168,108,0.2)' }}>
+                <img
+                  src={hotel.photo}
+                  alt={hotel.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
               </div>
 
               {/* Info */}
