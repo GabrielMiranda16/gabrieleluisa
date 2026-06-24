@@ -111,10 +111,10 @@ export default function Lodging() {
               style={{
                 background: 'rgba(245,240,234,0.04)',
                 border: '1px solid rgba(201,168,108,0.2)',
-                padding: 'clamp(1.8rem, 5vw, 2.8rem) clamp(2rem, 6vw, 3.5rem)',
+                padding: isMobile ? '2rem 1.5rem 2.5rem' : 'clamp(1.8rem, 5vw, 2.8rem) clamp(2rem, 6vw, 3.5rem)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 'clamp(1.5rem, 4vw, 3rem)',
+                gap: isMobile ? '1.2rem' : 'clamp(1.5rem, 4vw, 3rem)',
                 flexWrap: 'wrap' as const,
               }}
             >
@@ -150,7 +150,7 @@ export default function Lodging() {
               </div>
 
               {/* Distância + botões */}
-              <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: isMobile ? 'center' : 'flex-end', gap: 12, width: isMobile ? '100%' : 'auto' }}>
+              <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: isMobile ? 'center' : 'flex-end', gap: 12, width: isMobile ? '100%' : 'auto', paddingTop: isMobile ? 8 : 0, borderTop: isMobile ? '1px solid rgba(201,168,108,0.15)' : 'none' }}>
                 <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1rem', fontStyle: 'italic', color: 'rgba(201,168,108,0.7)' }}>
                   {hotel.distance}
                 </span>
