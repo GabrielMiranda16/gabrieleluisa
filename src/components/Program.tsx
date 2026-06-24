@@ -57,7 +57,7 @@ const steps = [
 
 export default function Program() {
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
+    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 8rem' }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
         <motion.div
@@ -67,10 +67,10 @@ export default function Program() {
           transition={{ duration: 0.8 }}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 56, textAlign: 'center' }}
         >
-          <span style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A86C', fontWeight: 500 }}>
+          <span style={{ fontFamily: 'Montserrat', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#4A7A65', fontWeight: 500 }}>
             O que nos espera
           </span>
-          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#F5F0EA', letterSpacing: '0.04em' }}>
+          <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: '#2D4A3E', letterSpacing: '0.04em' }}>
             Programa do Dia
           </h2>
           <div className="diamond-divider"><span /></div>
@@ -85,8 +85,8 @@ export default function Program() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
               style={{
-                background: 'rgba(245,240,234,0.04)',
-                border: '1px solid rgba(201,168,108,0.2)',
+                background: '#fff',
+                border: '1px solid #D4E6DC',
                 padding: 'clamp(2rem, 5vw, 3rem) clamp(2rem, 6vw, 4rem)',
                 display: 'flex',
                 alignItems: 'center',
@@ -94,19 +94,19 @@ export default function Program() {
               }}
             >
               {/* Ícone */}
-              <div style={{ flexShrink: 0, width: 72, height: 72, borderRadius: '50%', background: 'rgba(245,240,234,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(201,168,108,0.2)' }}>
+              <div style={{ flexShrink: 0, width: 72, height: 72, borderRadius: '50%', background: '#F5F0EA', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #D4E6DC' }}>
                 {step.icon}
               </div>
 
               {/* Conteúdo */}
               <div style={{ flex: 1 }}>
-                <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.5)', fontWeight: 500 }}>
+                <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#6B7563', fontWeight: 500 }}>
                   {step.label}
                 </span>
-                <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.6rem, 4vw, 2.2rem)', fontWeight: 500, color: '#F5F0EA', margin: '6px 0 10px' }}>
+                <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.6rem, 4vw, 2.2rem)', fontWeight: 500, color: '#2D4A3E', margin: '6px 0 10px' }}>
                   {step.title}
                 </h3>
-                <p style={{ fontFamily: 'Montserrat', fontSize: '0.85rem', color: 'rgba(245,240,234,0.7)', lineHeight: 1.8, fontWeight: 400, margin: 0 }}>
+                <p style={{ fontFamily: 'Montserrat', fontSize: '0.85rem', color: '#6B7563', lineHeight: 1.8, fontWeight: 400, margin: 0 }}>
                   {step.description}
                 </p>
               </div>
