@@ -21,8 +21,6 @@ export default function Gallery() {
   const scrollToIndex = (index: number) => {
     const container = containerRef.current
     if (!container) return
-    const paddingLeft = (container.offsetWidth / 2) - (CARD_WIDTH / 2)
-    const target = index * (CARD_WIDTH + CARD_GAP) - paddingLeft + (container.offsetWidth / 2) - (CARD_WIDTH / 2)
     container.scrollTo({ left: index * (CARD_WIDTH + CARD_GAP), behavior: 'smooth' })
     currentIndex.current = index
   }
