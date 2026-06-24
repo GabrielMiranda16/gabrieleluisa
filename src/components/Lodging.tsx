@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const hotels = [
   {
@@ -60,6 +61,15 @@ function Stars({ count }: { count: number }) {
 }
 
 export default function Lodging() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   return (
     <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
@@ -140,7 +150,7 @@ export default function Lodging() {
               </div>
 
               {/* Distância + botões */}
-              <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+              <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: isMobile ? 'center' : 'flex-end', gap: 12, width: isMobile ? '100%' : 'auto' }}>
                 <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1rem', fontStyle: 'italic', color: 'rgba(201,168,108,0.7)' }}>
                   {hotel.distance}
                 </span>
