@@ -5,7 +5,7 @@ const hotels = [
     category: 'Luxo',
     name: 'Fasano Boa Vista Surf Lodge',
     address: 'Rod. Castello Branco, km 102,5 — Porto Feliz',
-    distance: '~80 km · ~1h do local',
+    distance: '~45 min do local',
     stars: 5,
     phone: '(15) 3261-9900',
     photo: 'https://boavistasurflodge.com.br/wp-content/uploads/2024/10/24653-jhsf-village-1249.jpg',
