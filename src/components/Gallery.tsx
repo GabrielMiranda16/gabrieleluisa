@@ -2,6 +2,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
 const placeholders = Array.from({ length: 6 }, (_, i) => i)
+const CARD_WIDTH = 280
+const CARD_GAP = 20
+const AUTOPLAY_INTERVAL = 3000
+const RESUME_DELAY = 4000
 
 export default function Gallery() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -10,6 +14,32 @@ export default function Gallery() {
   const dragStartX = useRef(0)
   const scrollStartX = useRef(0)
   const hasDragged = useRef(false)
+  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const resumeRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const currentIndex = useRef(0)
+
+  const scrollToIndex = (index: number) => {
+    const container = containerRef.current
+    if (!container) return
+    const paddingLeft = (container.offsetWidth / 2) - (CARD_WIDTH / 2)
+    const target = index * (CARD_WIDTH + CARD_GAP) - paddingLeft + (container.offsetWidth / 2) - (CARD_WIDTH / 2)
+    container.scrollTo({ left: index * (CARD_WIDTH + CARD_GAP), behavior: 'smooth' })
+    currentIndex.current = index
+  }
+
+  const startAutoplay = () => {
+    if (autoplayRef.current) clearInterval(autoplayRef.current)
+    autoplayRef.current = setInterval(() => {
+      const next = (currentIndex.current + 1) % placeholders.length
+      scrollToIndex(next)
+    }, AUTOPLAY_INTERVAL)
+  }
+
+  const pauseAutoplay = () => {
+    if (autoplayRef.current) { clearInterval(autoplayRef.current); autoplayRef.current = null }
+    if (resumeRef.current) clearTimeout(resumeRef.current)
+    resumeRef.current = setTimeout(startAutoplay, RESUME_DELAY)
+  }
 
   useEffect(() => {
     const container = containerRef.current
@@ -23,11 +53,12 @@ export default function Gallery() {
         const distance = Math.abs(containerCenter - cardCenter)
         const maxDistance = container.offsetWidth * 0.6
         const ratio = Math.min(distance / maxDistance, 1)
-        const scale = 1 - ratio * 0.18
-        const opacity = 1 - ratio * 0.55
-        card.style.transform = `scale(${scale})`
-        card.style.opacity = `${opacity}`
+        card.style.transform = `scale(${1 - ratio * 0.18})`
+        card.style.opacity = `${1 - ratio * 0.55}`
       })
+
+      // Track current index from scroll position
+      currentIndex.current = Math.round(container.scrollLeft / (CARD_WIDTH + CARD_GAP))
     }
 
     const onMouseDown = (e: MouseEvent) => {
@@ -37,6 +68,7 @@ export default function Gallery() {
       scrollStartX.current = container.scrollLeft
       container.style.cursor = 'grabbing'
       container.style.scrollSnapType = 'none'
+      pauseAutoplay()
     }
 
     const onMouseMove = (e: MouseEvent) => {
@@ -53,25 +85,35 @@ export default function Gallery() {
       container.style.scrollSnapType = 'x mandatory'
     }
 
+    const onTouchStart = () => pauseAutoplay()
+
     container.addEventListener('scroll', updateScale, { passive: true })
     container.addEventListener('mousedown', onMouseDown)
+    container.addEventListener('touchstart', onTouchStart, { passive: true })
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
     updateScale()
 
+    startAutoplay()
+
     return () => {
       container.removeEventListener('scroll', updateScale)
       container.removeEventListener('mousedown', onMouseDown)
+      container.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', onMouseUp)
+      if (autoplayRef.current) clearInterval(autoplayRef.current)
+      if (resumeRef.current) clearTimeout(resumeRef.current)
     }
   }, [])
 
   useEffect(() => {
     if (lightbox !== null) {
       document.body.style.overflow = 'hidden'
+      if (autoplayRef.current) { clearInterval(autoplayRef.current); autoplayRef.current = null }
     } else {
       document.body.style.overflow = ''
+      startAutoplay()
     }
     return () => { document.body.style.overflow = '' }
   }, [lightbox])
@@ -101,7 +143,7 @@ export default function Gallery() {
           display: 'flex',
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
-          gap: 20,
+          gap: CARD_GAP,
           paddingLeft: 'calc(50vw - 140px)',
           paddingRight: 'calc(50vw - 140px)',
           paddingBottom: 16,
@@ -119,7 +161,7 @@ export default function Gallery() {
             onClick={() => { if (!hasDragged.current) setLightbox(i) }}
             style={{
               flexShrink: 0,
-              width: 280,
+              width: CARD_WIDTH,
               height: 380,
               scrollSnapAlign: 'center',
               background: 'rgba(245,240,234,0.06)',
