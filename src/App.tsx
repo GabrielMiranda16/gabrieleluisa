@@ -5,6 +5,7 @@ import Countdown from './components/Countdown'
 import OurStory from './components/OurStory'
 import Program from './components/Program'
 import TheDay from './components/TheDay'
+import Lodging from './components/Lodging'
 import Gallery from './components/Gallery'
 import RSVPGifts from './components/RSVPGifts'
 import Footer from './components/Footer'
@@ -25,6 +26,7 @@ export default function App() {
           <OurStory />
           <Program />
           <TheDay />
+          <Lodging />
           <Gallery />
           <RSVPGifts />
           <Footer />
