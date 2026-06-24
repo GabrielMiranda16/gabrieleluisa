@@ -3,14 +3,14 @@ import { motion } from 'framer-motion'
 const hotels = [
   {
     category: 'Luxo',
-    name: 'Grand Hotel Royal Sorocaba',
-    address: 'R. Dr. Álvaro Soares, 451 — Centro, Sorocaba',
-    distance: '~32 km · ~30 min do local',
+    name: 'Fasano Boa Vista Surf Lodge',
+    address: 'Rod. Castello Branco, km 102,5 — Porto Feliz',
+    distance: '~80 km · ~1h do local',
     stars: 5,
-    phone: '(15) 2102-8900',
-    photo: 'https://www.grandhotelroyal.com.br/wp-content/uploads/2021/03/banner-1.jpg',
-    map: 'https://maps.google.com/?q=Grand+Hotel+Royal+Sorocaba',
-    site: 'https://www.grandhotelroyal.com.br',
+    phone: '(15) 3261-9900',
+    photo: 'https://boavistasurflodge.com.br/wp-content/uploads/2024/10/24653-jhsf-village-1249.jpg',
+    map: 'https://maps.google.com/?q=Fasano+Boa+Vista+Surf+Lodge+Porto+Feliz',
+    site: 'https://boavistasurflodge.com.br',
   },
   {
     category: 'Premium',
