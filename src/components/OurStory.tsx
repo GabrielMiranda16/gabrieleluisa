@@ -60,7 +60,7 @@ export default function OurStory() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: i * 0.1 }}
-                    style={{ display: 'flex', gap: 24, alignItems: 'flex-start', paddingLeft: 8 }}
+                    style={{ display: 'flex', gap: 24, alignItems: 'flex-start', paddingLeft: 14 }}
                   >
                     <div style={{ flexShrink: 0, marginTop: 6, zIndex: 10 }}>
                       <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#C9A86C', boxShadow: '0 0 0 4px rgba(201,168,108,0.2)' }} />
