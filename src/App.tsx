@@ -25,8 +25,8 @@ export default function App() {
           <Countdown />
           <OurStory />
           <Program />
-          <TheDay />
           <Lodging />
+          <TheDay />
           <Gallery />
           <RSVPGifts />
           <Footer />
