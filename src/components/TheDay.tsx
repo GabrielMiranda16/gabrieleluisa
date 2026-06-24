@@ -75,13 +75,15 @@ export default function TheDay() {
           </div>
 
           {/* Mapa */}
-          <div style={{ width: '100%', height: 'clamp(280px, 45vw, 480px)', borderTop: '1px solid #D4E6DC' }}>
-            <iframe
-              title="Maison Reserva"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.0!2d-47.62!3d-23.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDM4JzI0LjAiUyA0N8KwMzcnMTIuMCJX!5e0!3m2!1spt!2sbr!4v1700000000000!5m2!1spt!2sbr&q=Estrada+Dr.+Celso+Charuri,+km+3.67+B,+Salto+de+Pirapora+SP"
-              width="100%" height="100%" style={{ border: 0, display: 'block' }}
-              allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div style={{ borderTop: '1px solid #D4E6DC', padding: '2.5rem' }}>
+            <div style={{ width: '100%', height: 'clamp(280px, 45vw, 480px)', border: '1px solid #D4E6DC', overflow: 'hidden' }}>
+              <iframe
+                title="Maison Reserva"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.0!2d-47.62!3d-23.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDM4JzI0LjAiUyA0N8KwMzcnMTIuMCJX!5e0!3m2!1spt!2sbr!4v1700000000000!5m2!1spt!2sbr&q=Estrada+Dr.+Celso+Charuri,+km+3.67+B,+Salto+de+Pirapora+SP"
+                width="100%" height="100%" style={{ border: 0, display: 'block' }}
+                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
 
           {/* Botão */}
