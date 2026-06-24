@@ -57,7 +57,7 @@ const steps = [
 
 export default function Program() {
   return (
-    <section style={{ background: 'linear-gradient(to bottom, #F5F0EA 65%, #2D4A3E 100%)', padding: '6rem 1.5rem 8rem' }}>
+    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 8rem' }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
         <motion.div
