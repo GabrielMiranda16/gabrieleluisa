@@ -3,27 +3,27 @@ import { motion } from 'framer-motion'
 const hotels = [
   {
     category: 'Premium',
-    name: 'Grand Mercure Sorocaba',
-    address: 'R. Treze de Maio, 900 — Centro, Sorocaba',
+    name: 'Novotel Sorocaba',
+    address: 'Av. Prof. Izoraida Marques Peres, 770 — Parque Campolim, Sorocaba',
     distance: '~50 km do local',
-    stars: 5,
-    link: 'https://maps.google.com/?q=Grand+Mercure+Sorocaba',
+    stars: 4,
+    link: 'https://maps.google.com/?q=Novotel+Sorocaba',
   },
   {
     category: 'Conforto',
-    name: 'Quality Inn Sorocaba',
-    address: 'Av. Ipanema, 250 — Sorocaba',
+    name: 'Ibis Styles Sorocaba Santa Rosalia',
+    address: 'Sorocaba — SP',
     distance: '~50 km do local',
-    stars: 4,
-    link: 'https://maps.google.com/?q=Quality+Inn+Sorocaba',
+    stars: 3,
+    link: 'https://maps.google.com/?q=Ibis+Styles+Sorocaba+Santa+Rosalia',
   },
   {
     category: 'Econômico',
     name: 'Ibis Sorocaba',
-    address: 'R. Barão de Piratininga — Centro, Sorocaba',
+    address: 'R. Maria Aparecida Pessotti Milego, 290 — Parque Campolim, Sorocaba',
     distance: '~50 km do local',
     stars: 3,
-    link: 'https://maps.google.com/?q=Ibis+Hotel+Sorocaba',
+    link: 'https://maps.google.com/?q=Ibis+Sorocaba',
   },
 ]
 
