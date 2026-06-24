@@ -6,6 +6,10 @@ const placeholders = Array.from({ length: 6 }, (_, i) => i)
 export default function Gallery() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const isDragging = useRef(false)
+  const dragStartX = useRef(0)
+  const scrollStartX = useRef(0)
+  const hasDragged = useRef(false)
 
   useEffect(() => {
     const container = containerRef.current
@@ -26,9 +30,41 @@ export default function Gallery() {
       })
     }
 
+    const onMouseDown = (e: MouseEvent) => {
+      isDragging.current = true
+      hasDragged.current = false
+      dragStartX.current = e.pageX
+      scrollStartX.current = container.scrollLeft
+      container.style.cursor = 'grabbing'
+      container.style.scrollSnapType = 'none'
+    }
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return
+      const dx = e.pageX - dragStartX.current
+      if (Math.abs(dx) > 4) hasDragged.current = true
+      container.scrollLeft = scrollStartX.current - dx
+    }
+
+    const onMouseUp = () => {
+      if (!isDragging.current) return
+      isDragging.current = false
+      container.style.cursor = 'grab'
+      container.style.scrollSnapType = 'x mandatory'
+    }
+
     container.addEventListener('scroll', updateScale, { passive: true })
+    container.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
     updateScale()
-    return () => container.removeEventListener('scroll', updateScale)
+
+    return () => {
+      container.removeEventListener('scroll', updateScale)
+      container.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
   }, [])
 
   useEffect(() => {
@@ -43,7 +79,6 @@ export default function Gallery() {
   return (
     <section style={{ background: '#2D4A3E', padding: '6rem 0', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
-      {/* Cabeçalho */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -60,7 +95,6 @@ export default function Gallery() {
         <div className="diamond-divider"><span /></div>
       </motion.div>
 
-      {/* Carrossel */}
       <div
         ref={containerRef}
         style={{
@@ -74,13 +108,15 @@ export default function Gallery() {
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
           alignItems: 'center',
+          cursor: 'grab',
+          userSelect: 'none',
         }}
       >
         {placeholders.map((i) => (
           <div
             key={i}
             className="gallery-card"
-            onClick={() => setLightbox(i)}
+            onClick={() => { if (!hasDragged.current) setLightbox(i) }}
             style={{
               flexShrink: 0,
               width: 280,
@@ -95,7 +131,7 @@ export default function Gallery() {
               gap: 12,
               transition: 'transform 0.3s ease, opacity 0.3s ease',
               willChange: 'transform, opacity',
-              cursor: 'pointer',
+              cursor: 'grab',
             }}
           >
             <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
@@ -120,7 +156,6 @@ export default function Gallery() {
         As fotos do nosso ensaio serão adicionadas em breve...
       </motion.p>
 
-      {/* Lightbox */}
       <AnimatePresence>
         {lightbox !== null && (
           <motion.div
@@ -132,7 +167,7 @@ export default function Gallery() {
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0,0,0,0.92)',
+              background: 'rgba(28,52,40,0.96)',
               zIndex: 200,
               display: 'flex',
               alignItems: 'center',
@@ -167,7 +202,6 @@ export default function Gallery() {
               </span>
             </motion.div>
 
-            {/* Botão fechar */}
             <button
               onClick={() => setLightbox(null)}
               style={{
