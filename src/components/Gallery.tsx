@@ -117,7 +117,7 @@ export default function Gallery() {
   }, [lightbox])
 
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 0', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <section style={{ background: 'linear-gradient(to bottom, #2D4A3E 65%, #F5F0EA 100%)', padding: '6rem 0', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}

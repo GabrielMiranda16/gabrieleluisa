@@ -19,7 +19,7 @@ export default function OurStory() {
   }, [])
 
   return (
-    <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 8rem' }}>
+    <section style={{ background: 'linear-gradient(to bottom, #2D4A3E 65%, #F5F0EA 100%)', padding: '6rem 1.5rem 8rem' }}>
       <div style={{ maxWidth: 740, margin: '0 auto' }}>
 
         <motion.div

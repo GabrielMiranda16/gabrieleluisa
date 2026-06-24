@@ -4,7 +4,7 @@ export default function RSVPGifts() {
   return (
     <>
       {/* Seção Lista de Presentes */}
-      <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <section style={{ background: 'linear-gradient(to bottom, #F5F0EA 65%, #2D4A3E 100%)', padding: '6rem 1.5rem', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export default function RSVPGifts() {
       </section>
 
       {/* Seção Confirmar Presença */}
-      <section id="confirmar-presenca" style={{ background: '#2D4A3E', padding: '6rem 1.5rem', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <section id="confirmar-presenca" style={{ background: 'linear-gradient(to bottom, #2D4A3E 65%, #F5F0EA 100%)', padding: '6rem 1.5rem', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

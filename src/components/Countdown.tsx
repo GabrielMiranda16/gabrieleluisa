@@ -33,7 +33,7 @@ export default function Countdown() {
   const values = [time.days, time.hours, time.minutes, time.seconds]
 
   return (
-    <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 56 }}>
+    <section style={{ background: 'linear-gradient(to bottom, #F5F0EA 65%, #2D4A3E 100%)', padding: '6rem 1.5rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 56 }}>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
