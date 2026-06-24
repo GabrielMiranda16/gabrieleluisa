@@ -77,6 +77,8 @@ export default function Countdown() {
 
       if (revealedCount.current >= 4) {
         setTimeout(() => {
+          locked.current = false
+          hasPlayed.current = true
           unlockScroll()
           setDone(true)
         }, 300)
