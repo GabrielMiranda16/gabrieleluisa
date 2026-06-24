@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 export default function TheDay() {
   return (
     <section style={{ background: '#F5F0EA', padding: '6rem 1.5rem 8rem' }}>
-      <div style={{ maxWidth: 860, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto' }}>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
