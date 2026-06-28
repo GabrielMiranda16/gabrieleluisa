@@ -35,8 +35,8 @@ export default function RSVPGifts() {
             para tornar nosso novo lar ainda mais especial.
           </p>
 
-          <button
-            disabled
+          <a
+            href="/presentes"
             style={{
               marginTop: 8,
               fontFamily: 'Montserrat, sans-serif',
@@ -44,15 +44,17 @@ export default function RSVPGifts() {
               fontWeight: 700,
               letterSpacing: '0.3em',
               textTransform: 'uppercase',
-              color: 'rgba(45,74,62,0.35)',
+              color: '#2D4A3E',
               background: 'none',
-              border: '1px solid rgba(45,74,62,0.2)',
+              border: '1px solid #2D4A3E',
               padding: '14px 40px',
-              cursor: 'not-allowed',
+              cursor: 'pointer',
+              textDecoration: 'none',
+              display: 'inline-block',
             }}
           >
-            Em breve
-          </button>
+            Ver lista de presentes
+          </a>
         </motion.div>
       </section>
 
