@@ -21,6 +21,11 @@ async function sendWhatsApp(text: string) {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).end()
 
+  const receivedToken = req.headers['asaas-access-token']
+  if (receivedToken !== process.env.ASAAS_WEBHOOK_TOKEN) {
+    return res.status(401).end()
+  }
+
   const event = req.body
   if (!['PAYMENT_RECEIVED', 'PAYMENT_CONFIRMED'].includes(event?.event)) {
     return res.status(200).json({ ok: true })
