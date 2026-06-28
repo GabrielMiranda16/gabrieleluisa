@@ -7,17 +7,51 @@ const fmtBRL = (v: number) =>
 
 // ─── BUY MODAL ──────────────────────────────────────────────────────────────
 
-function BuyModal({ gift, onClose }: { gift: Gift; onClose: () => void }) {
+function BuyModal({ gift, onClose, onPaid: _onPaid }: { gift: Gift; onClose: () => void; onPaid: () => void }) {
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
   const [amount, setAmount] = useState('')
   const [method, setMethod] = useState<'pix' | 'credit_card'>('pix')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [pix, setPix] = useState<{ qr: string; key: string } | null>(null)
+  const [copied, setCopied] = useState(false)
 
   const inputSt: React.CSSProperties = {
     width: '100%', padding: '12px 16px',
     border: '1px solid #D4E6DC', background: '#fff',
     fontFamily: 'Montserrat, sans-serif', fontSize: '0.88rem',
     color: '#2D4A3E', outline: 'none', boxSizing: 'border-box',
+  }
+
+  const finalAmount = gift.type === 'fixed' ? (gift.price ?? 0) : parseFloat(amount.replace(',', '.'))
+  const canSubmit = name.trim().length > 0 && (gift.type === 'fixed' || (parseFloat(amount) > 0))
+
+  const handleSubmit = async () => {
+    if (!canSubmit) return
+    setLoading(true); setError('')
+    try {
+      const r = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gift_id: gift.id, buyer_name: name.trim(), buyer_message: message.trim(), amount: finalAmount, payment_method: method }),
+      })
+      const data = await r.json()
+      if (!r.ok) { setError(data.error ?? 'Erro ao processar pagamento.'); return }
+
+      if (method === 'pix' && data.pix_qr_code) {
+        setPix({ qr: data.pix_qr_code, key: data.pix_key })
+      } else if (data.payment_url) {
+        window.open(data.payment_url, '_blank')
+        onClose()
+      }
+    } catch {
+      setError('Erro de conexão. Tente novamente.')
+    } finally { setLoading(false) }
+  }
+
+  const copyKey = () => {
+    if (pix?.key) { navigator.clipboard.writeText(pix.key); setCopied(true); setTimeout(() => setCopied(false), 2500) }
   }
 
   return (
@@ -36,11 +70,11 @@ function BuyModal({ gift, onClose }: { gift: Gift; onClose: () => void }) {
           transition={{ type: 'spring', damping: 28, stiffness: 300 }}
           style={{ background: '#F5F0EA', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}
         >
-          {/* Header verde */}
+          {/* Header */}
           <div style={{ background: '#2D4A3E', padding: '2rem 2rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A86C', display: 'block', marginBottom: 8 }}>
-                Presentear
+                {pix ? 'Pagamento PIX' : 'Presentear'}
               </span>
               <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.6rem, 4vw, 2.2rem)', fontWeight: 500, color: '#F5F0EA', margin: 0, lineHeight: 1.2 }}>
                 {gift.name}
@@ -50,80 +84,115 @@ function BuyModal({ gift, onClose }: { gift: Gift; onClose: () => void }) {
           </div>
 
           <div style={{ padding: '2rem' }}>
-            {gift.photo_url && (
-              <div style={{ width: '100%', height: 200, overflow: 'hidden', marginBottom: 24, border: '1px solid #D4E6DC' }}>
-                <img src={gift.photo_url} alt={gift.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-              </div>
-            )}
-
-            {gift.description && (
-              <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.1rem', fontStyle: 'italic', color: '#6B7563', lineHeight: 1.7, margin: '0 0 20px' }}>
-                {gift.description}
-              </p>
-            )}
-
-            {/* Valor */}
-            <div style={{ background: '#fff', border: '1px solid #D4E6DC', padding: '1rem 1.5rem', marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#6B7563' }}>
-                {gift.type === 'free' ? 'Você decide o valor' : 'Valor'}
-              </span>
-              {gift.type === 'fixed' && (
-                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.6rem', color: '#C9A86C', fontWeight: 500 }}>
-                  {fmtBRL(gift.price ?? 0)}
-                </span>
-              )}
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              {gift.type === 'free' && (
-                <div>
-                  <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Valor (R$) *</label>
-                  <input value={amount} onChange={e => setAmount(e.target.value)} type="number" min="1" step="0.01" placeholder="0,00" style={inputSt} />
+            {/* ── Tela PIX ── */}
+            {pix ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', color: '#6B7563', lineHeight: 1.7, margin: 0 }}>
+                  Escaneie o QR code ou copie o código PIX abaixo.<br />
+                  O pagamento é confirmado automaticamente.
+                </p>
+                <div style={{ background: '#fff', border: '1px solid #D4E6DC', padding: 16 }}>
+                  <img src={`data:image/png;base64,${pix.qr}`} alt="QR Code PIX" style={{ width: 200, height: 200, display: 'block' }} />
                 </div>
-              )}
-
-              <div>
-                <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Seu nome *</label>
-                <input value={name} onChange={e => setName(e.target.value)} placeholder="Como quer aparecer na lista" style={inputSt} />
-              </div>
-
-              <div>
-                <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Mensagem (opcional)</label>
-                <textarea value={message} onChange={e => setMessage(e.target.value)} rows={3} placeholder="Deixe uma mensagem para o casal…" style={{ ...inputSt, resize: 'vertical', fontFamily: 'Montserrat, sans-serif' }} />
-              </div>
-
-              {/* Método de pagamento */}
-              <div>
-                <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 10 }}>Forma de pagamento</label>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  {(['pix', 'credit_card'] as const).map(m => (
-                    <button key={m} type="button" onClick={() => setMethod(m)} style={{
-                      padding: '14px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                      border: `1px solid ${method === m ? '#2D4A3E' : '#D4E6DC'}`,
-                      background: method === m ? '#2D4A3E' : '#fff',
-                      color: method === m ? '#F5F0EA' : '#6B7563',
-                      fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', letterSpacing: '0.2em',
-                      textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
-                    }}>
-                      {m === 'pix' ? '◆ PIX' : '▣ Cartão'}
-                    </button>
-                  ))}
+                <div style={{ width: '100%', background: '#fff', border: '1px solid #D4E6DC', padding: '14px 16px', display: 'flex', gap: 10, alignItems: 'center' }}>
+                  <p style={{ fontFamily: 'Montserrat', fontSize: '0.68rem', color: '#6B7563', margin: 0, flex: 1, wordBreak: 'break-all', textAlign: 'left' }}>
+                    {pix.key.substring(0, 60)}…
+                  </p>
+                  <button onClick={copyKey} style={{ flexShrink: 0, padding: '8px 16px', background: copied ? '#2D4A3E' : '#F5F0EA', border: '1px solid #2D4A3E', fontFamily: 'Montserrat', fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: copied ? '#F5F0EA' : '#2D4A3E', cursor: 'pointer', transition: 'all 0.2s' }}>
+                    {copied ? 'Copiado ✓' : 'Copiar'}
+                  </button>
                 </div>
+                <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.7rem', color: '#C9A86C', fontWeight: 500, margin: 0 }}>
+                  {fmtBRL(finalAmount)}
+                </p>
+                <button onClick={onClose} style={{ padding: '13px 40px', border: '1px solid #2D4A3E', background: 'transparent', fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#2D4A3E', cursor: 'pointer' }}>
+                  Fechar
+                </button>
               </div>
+            ) : (
+              <>
+                {gift.photo_url && (
+                  <div style={{ width: '100%', height: 180, overflow: 'hidden', marginBottom: 20, border: '1px solid #D4E6DC' }}>
+                    <img src={gift.photo_url} alt={gift.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                )}
 
-              <button
-                disabled
-                style={{
-                  marginTop: 8, padding: '16px',
-                  background: 'rgba(45,74,62,0.12)', color: 'rgba(45,74,62,0.35)',
-                  fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', fontWeight: 700,
-                  letterSpacing: '0.3em', textTransform: 'uppercase',
-                  border: '1px solid rgba(45,74,62,0.15)', cursor: 'not-allowed',
-                }}
-              >
-                Finalizar — em breve via Asaas
-              </button>
-            </div>
+                {gift.description && (
+                  <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.1rem', fontStyle: 'italic', color: '#6B7563', lineHeight: 1.7, margin: '0 0 20px' }}>
+                    {gift.description}
+                  </p>
+                )}
+
+                <div style={{ background: '#fff', border: '1px solid #D4E6DC', padding: '1rem 1.5rem', marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#6B7563' }}>
+                    {gift.type === 'free' ? 'Você decide o valor' : 'Valor'}
+                  </span>
+                  {gift.type === 'fixed' && (
+                    <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.6rem', color: '#C9A86C', fontWeight: 500 }}>
+                      {fmtBRL(gift.price ?? 0)}
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {gift.type === 'free' && (
+                    <div>
+                      <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Valor (R$) *</label>
+                      <input value={amount} onChange={e => setAmount(e.target.value)} type="number" min="1" step="0.01" placeholder="0,00" style={inputSt} />
+                    </div>
+                  )}
+                  <div>
+                    <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Seu nome *</label>
+                    <input value={name} onChange={e => setName(e.target.value)} placeholder="Como quer aparecer na lista" style={inputSt} />
+                  </div>
+                  <div>
+                    <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Mensagem (opcional)</label>
+                    <textarea value={message} onChange={e => setMessage(e.target.value)} rows={3} placeholder="Deixe uma mensagem para o casal…" style={{ ...inputSt, resize: 'vertical', fontFamily: 'Montserrat, sans-serif' }} />
+                  </div>
+                  <div>
+                    <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 10 }}>Forma de pagamento</label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                      {(['pix', 'credit_card'] as const).map(m => (
+                        <button key={m} type="button" onClick={() => setMethod(m)} style={{
+                          padding: '14px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                          border: `1px solid ${method === m ? '#2D4A3E' : '#D4E6DC'}`,
+                          background: method === m ? '#2D4A3E' : '#fff',
+                          color: method === m ? '#F5F0EA' : '#6B7563',
+                          fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', letterSpacing: '0.2em',
+                          textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
+                        }}>
+                          {m === 'pix' ? '◆ PIX' : '▣ Cartão'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {error && <p style={{ fontFamily: 'Montserrat', fontSize: '0.78rem', color: '#b33', margin: 0 }}>{error}</p>}
+
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!canSubmit || loading}
+                    style={{
+                      marginTop: 8, padding: '16px',
+                      background: (!canSubmit || loading) ? 'rgba(45,74,62,0.15)' : '#2D4A3E',
+                      color: (!canSubmit || loading) ? 'rgba(45,74,62,0.4)' : '#F5F0EA',
+                      fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', fontWeight: 700,
+                      letterSpacing: '0.3em', textTransform: 'uppercase',
+                      border: 'none', cursor: (!canSubmit || loading) ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    {loading ? 'Processando…' : method === 'pix' ? 'Gerar PIX' : 'Pagar com cartão →'}
+                  </button>
+
+                  {method === 'credit_card' && (
+                    <p style={{ fontFamily: 'Montserrat', fontSize: '0.68rem', color: '#6B7563', textAlign: 'center', margin: 0 }}>
+                      Você será redirecionado para a página de pagamento seguro.
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </motion.div>
       </motion.div>
@@ -134,10 +203,7 @@ function BuyModal({ gift, onClose }: { gift: Gift; onClose: () => void }) {
 // ─── GIFT CARD ───────────────────────────────────────────────────────────────
 
 function GiftCard({ gift, buyers, onBuy, index }: {
-  gift: Gift
-  buyers: string[]
-  onBuy: (g: Gift) => void
-  index: number
+  gift: Gift; buyers: string[]; onBuy: (g: Gift) => void; index: number
 }) {
   const available = gift.quantity - gift.quantity_bought
   const soldOut = available <= 0
@@ -233,6 +299,15 @@ export default function GiftListPage() {
   const [purchases, setPurchases] = useState<GiftPurchase[]>([])
   const [loading, setLoading] = useState(true)
   const [buying, setBuying] = useState<Gift | null>(null)
+
+  const reload = async () => {
+    const [{ data: g }, { data: p }] = await Promise.all([
+      supabase.from('gifts').select('*').eq('active', true).order('sort_order').order('created_at'),
+      supabase.from('gift_purchases').select('*').eq('payment_status', 'paid'),
+    ])
+    setGifts(g ?? [])
+    setPurchases(p ?? [])
+  }
 
   useEffect(() => {
     const load = async () => {
@@ -367,7 +442,7 @@ export default function GiftListPage() {
         </p>
       </div>
 
-      {buying && <BuyModal gift={buying} onClose={() => setBuying(null)} />}
+      {buying && <BuyModal gift={buying} onClose={() => setBuying(null)} onPaid={() => { setBuying(null); reload() }} />}
     </>
   )
 }
