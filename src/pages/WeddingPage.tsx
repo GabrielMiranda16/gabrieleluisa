@@ -13,7 +13,12 @@ import MusicPlayer from '../components/MusicPlayer'
 import FloatingRSVP from '../components/FloatingRSVP'
 
 export default function WeddingPage() {
-  const [opened, setOpened] = useState(() => !!window.location.hash)
+  const [opened, setOpened] = useState(() => sessionStorage.getItem('envelopeOpened') === 'true')
+
+  const handleOpen = () => {
+    sessionStorage.setItem('envelopeOpened', 'true')
+    setOpened(true)
+  }
 
   useEffect(() => {
     if (!opened) return
@@ -25,7 +30,7 @@ export default function WeddingPage() {
 
   return (
     <>
-      {!opened && <EnvelopeOpening onOpen={() => setOpened(true)} />}
+      {!opened && <EnvelopeOpening onOpen={handleOpen} />}
       {opened && (
         <main>
           <Hero />
