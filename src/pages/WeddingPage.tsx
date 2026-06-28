@@ -13,12 +13,13 @@ import MusicPlayer from '../components/MusicPlayer'
 import FloatingRSVP from '../components/FloatingRSVP'
 
 export default function WeddingPage() {
-  const [opened, setOpened] = useState(() => sessionStorage.getItem('envelopeOpened') === 'true')
+  const [opened, setOpened] = useState(() => {
+    const skip = new URLSearchParams(window.location.search).get('skip') === '1'
+    if (skip) sessionStorage.removeItem('envelopeOpened')
+    return skip
+  })
 
-  const handleOpen = () => {
-    sessionStorage.setItem('envelopeOpened', 'true')
-    setOpened(true)
-  }
+  const handleOpen = () => setOpened(true)
 
   useEffect(() => {
     if (!opened) return
