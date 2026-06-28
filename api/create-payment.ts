@@ -52,7 +52,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     description: `Presente: ${gift.name} — Casamento Luisa & Gabriel`,
   })
 
-  if (!payment.id) return res.status(500).json({ error: 'Erro ao criar pagamento no Asaas.', detail: payment })
+  if (!payment.id) {
+    const msg = payment.errors?.[0]?.description ?? payment.message ?? JSON.stringify(payment)
+    return res.status(500).json({ error: `Asaas: ${msg}` })
+  }
 
   // PIX: buscar QR code
   let pix_qr_code: string | null = null
