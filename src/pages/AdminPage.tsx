@@ -39,7 +39,7 @@ function LoginForm() {
     e.preventDefault()
     setLoading(true); setError('')
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) setError('Email ou senha incorretos.')
+    if (error) setError(error.message)
     setLoading(false)
   }
 
