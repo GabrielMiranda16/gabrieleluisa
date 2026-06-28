@@ -1,271 +1,238 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { supabase, Gift, GiftPurchase } from '../lib/supabase'
-
-const C = {
-  cream: '#F5F0EA',
-  green: '#2D4A3E',
-  greenMid: '#4A7A65',
-  gold: '#C9A86C',
-  border: '#D4E6DC',
-  text: '#6B7563',
-  white: '#fff',
-}
 
 const fmtBRL = (v: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
 
 // ─── BUY MODAL ──────────────────────────────────────────────────────────────
 
-interface BuyModalProps {
-  gift: Gift
-  onClose: () => void
-}
-
-function BuyModal({ gift, onClose }: BuyModalProps) {
+function BuyModal({ gift, onClose }: { gift: Gift; onClose: () => void }) {
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
-  const [amount, setAmount] = useState(gift.price ? fmtBRL(gift.price).replace('R$ ', '') : '')
+  const [amount, setAmount] = useState('')
   const [method, setMethod] = useState<'pix' | 'credit_card'>('pix')
 
+  const inputSt: React.CSSProperties = {
+    width: '100%', padding: '12px 16px',
+    border: '1px solid #D4E6DC', background: '#fff',
+    fontFamily: 'Montserrat, sans-serif', fontSize: '0.88rem',
+    color: '#2D4A3E', outline: 'none', boxSizing: 'border-box',
+  }
+
   return (
-    <div
-      style={{ position: 'fixed', inset: 0, background: 'rgba(45,74,62,0.7)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '0' }}
-      onClick={e => { if (e.target === e.currentTarget) onClose() }}
-    >
-      <div style={{ background: C.white, width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', padding: '2.5rem 2rem 3rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
-          <div>
-            <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: C.greenMid }}>Presentear</span>
-            <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.8rem', fontWeight: 500, color: C.green, margin: '4px 0 0' }}>{gift.name}</h2>
-          </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.text, fontSize: '1.5rem', lineHeight: 1, flexShrink: 0 }}>×</button>
-        </div>
-
-        {gift.photo_url && (
-          <img src={gift.photo_url} alt={gift.name} style={{ width: '100%', height: 180, objectFit: 'cover', marginBottom: 20, display: 'block' }} />
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div>
-            <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: C.text, display: 'block', marginBottom: 6 }}>Seu nome *</label>
-            <input
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="Como quer ser identificado"
-              style={{ width: '100%', padding: '10px 14px', border: `1px solid ${C.border}`, fontFamily: 'Montserrat', fontSize: '0.88rem', color: C.green, outline: 'none', boxSizing: 'border-box' }}
-            />
-          </div>
-
-          <div>
-            <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: C.text, display: 'block', marginBottom: 6 }}>Mensagem (opcional)</label>
-            <textarea
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              rows={3}
-              placeholder="Deixe uma mensagem para o casal…"
-              style={{ width: '100%', padding: '10px 14px', border: `1px solid ${C.border}`, fontFamily: 'Montserrat', fontSize: '0.88rem', color: C.green, outline: 'none', resize: 'vertical', boxSizing: 'border-box' }}
-            />
-          </div>
-
-          {gift.type === 'free' && (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        style={{ position: 'fixed', inset: 0, background: 'rgba(45,74,62,0.75)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}
+        onClick={e => { if (e.target === e.currentTarget) onClose() }}
+      >
+        <motion.div
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0 }}
+          transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+          style={{ background: '#F5F0EA', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}
+        >
+          {/* Header verde */}
+          <div style={{ background: '#2D4A3E', padding: '2rem 2rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: C.text, display: 'block', marginBottom: 6 }}>Valor (R$) *</label>
-              <input
-                value={amount}
-                onChange={e => setAmount(e.target.value)}
-                type="number"
-                min="1"
-                step="0.01"
-                placeholder="0,00"
-                style={{ width: '100%', padding: '10px 14px', border: `1px solid ${C.border}`, fontFamily: 'Montserrat', fontSize: '0.88rem', color: C.green, outline: 'none', boxSizing: 'border-box' }}
-              />
+              <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A86C', display: 'block', marginBottom: 8 }}>
+                Presentear
+              </span>
+              <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.6rem, 4vw, 2.2rem)', fontWeight: 500, color: '#F5F0EA', margin: 0, lineHeight: 1.2 }}>
+                {gift.name}
+              </h2>
             </div>
-          )}
-
-          {gift.type === 'fixed' && (
-            <div style={{ background: C.cream, padding: '12px 16px', border: `1px solid ${C.border}` }}>
-              <span style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', color: C.text, letterSpacing: '0.1em' }}>Valor: </span>
-              <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.3rem', color: C.gold, fontWeight: 500 }}>{fmtBRL(gift.price ?? 0)}</span>
-            </div>
-          )}
-
-          <div>
-            <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: C.text, display: 'block', marginBottom: 10 }}>Forma de pagamento</label>
-            <div style={{ display: 'flex', gap: 12 }}>
-              {(['pix', 'credit_card'] as const).map(m => (
-                <button
-                  key={m}
-                  type="button"
-                  onClick={() => setMethod(m)}
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    border: `1px solid ${method === m ? C.green : C.border}`,
-                    background: method === m ? C.green : C.white,
-                    color: method === m ? C.cream : C.text,
-                    fontFamily: 'Montserrat, sans-serif',
-                    fontSize: '0.7rem',
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                  }}
-                >
-                  {m === 'pix' ? (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill={method === m ? C.cream : C.text}>
-                        <path d="M12 2L4 7l8 5 8-5-8-5zM4 12l8 5 8-5M4 17l8 5 8-5" stroke={method === m ? C.cream : C.text} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      PIX
-                    </>
-                  ) : (
-                    <>
-                      <svg width="16" height="12" viewBox="0 0 24 16" fill="none" stroke={method === m ? C.cream : C.text} strokeWidth="1.5" strokeLinecap="round">
-                        <rect x="1" y="1" width="22" height="14" rx="2"/>
-                        <line x1="1" y1="6" x2="23" y2="6"/>
-                      </svg>
-                      Cartão
-                    </>
-                  )}
-                </button>
-              ))}
-            </div>
+            <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(245,240,234,0.5)', fontSize: '1.8rem', lineHeight: 1, flexShrink: 0, marginTop: -4 }}>×</button>
           </div>
 
-          <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <button
-              disabled
-              style={{
-                padding: '16px',
-                background: 'rgba(45,74,62,0.15)',
-                color: 'rgba(45,74,62,0.4)',
-                fontFamily: 'Montserrat, sans-serif',
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                letterSpacing: '0.3em',
-                textTransform: 'uppercase',
-                border: `1px solid rgba(45,74,62,0.15)`,
-                cursor: 'not-allowed',
-              }}
-            >
-              Finalizar pagamento
-            </button>
-            <p style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', color: C.text, textAlign: 'center', margin: 0, fontStyle: 'italic' }}>
-              Pagamento em breve via Asaas · PIX e Cartão
-            </p>
+          <div style={{ padding: '2rem' }}>
+            {gift.photo_url && (
+              <div style={{ width: '100%', height: 200, overflow: 'hidden', marginBottom: 24, border: '1px solid #D4E6DC' }}>
+                <img src={gift.photo_url} alt={gift.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              </div>
+            )}
+
+            {gift.description && (
+              <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.1rem', fontStyle: 'italic', color: '#6B7563', lineHeight: 1.7, margin: '0 0 20px' }}>
+                {gift.description}
+              </p>
+            )}
+
+            {/* Valor */}
+            <div style={{ background: '#fff', border: '1px solid #D4E6DC', padding: '1rem 1.5rem', marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#6B7563' }}>
+                {gift.type === 'free' ? 'Você decide o valor' : 'Valor'}
+              </span>
+              {gift.type === 'fixed' && (
+                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.6rem', color: '#C9A86C', fontWeight: 500 }}>
+                  {fmtBRL(gift.price ?? 0)}
+                </span>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {gift.type === 'free' && (
+                <div>
+                  <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Valor (R$) *</label>
+                  <input value={amount} onChange={e => setAmount(e.target.value)} type="number" min="1" step="0.01" placeholder="0,00" style={inputSt} />
+                </div>
+              )}
+
+              <div>
+                <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Seu nome *</label>
+                <input value={name} onChange={e => setName(e.target.value)} placeholder="Como quer aparecer na lista" style={inputSt} />
+              </div>
+
+              <div>
+                <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 8 }}>Mensagem (opcional)</label>
+                <textarea value={message} onChange={e => setMessage(e.target.value)} rows={3} placeholder="Deixe uma mensagem para o casal…" style={{ ...inputSt, resize: 'vertical', fontFamily: 'Montserrat, sans-serif' }} />
+              </div>
+
+              {/* Método de pagamento */}
+              <div>
+                <label style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', display: 'block', marginBottom: 10 }}>Forma de pagamento</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  {(['pix', 'credit_card'] as const).map(m => (
+                    <button key={m} type="button" onClick={() => setMethod(m)} style={{
+                      padding: '14px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                      border: `1px solid ${method === m ? '#2D4A3E' : '#D4E6DC'}`,
+                      background: method === m ? '#2D4A3E' : '#fff',
+                      color: method === m ? '#F5F0EA' : '#6B7563',
+                      fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', letterSpacing: '0.2em',
+                      textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
+                    }}>
+                      {m === 'pix' ? '◆ PIX' : '▣ Cartão'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                disabled
+                style={{
+                  marginTop: 8, padding: '16px',
+                  background: 'rgba(45,74,62,0.12)', color: 'rgba(45,74,62,0.35)',
+                  fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', fontWeight: 700,
+                  letterSpacing: '0.3em', textTransform: 'uppercase',
+                  border: '1px solid rgba(45,74,62,0.15)', cursor: 'not-allowed',
+                }}
+              >
+                Finalizar — em breve via Asaas
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   )
 }
 
 // ─── GIFT CARD ───────────────────────────────────────────────────────────────
 
-interface CardProps {
+function GiftCard({ gift, buyers, onBuy, index }: {
   gift: Gift
-  paidPurchases: GiftPurchase[]
+  buyers: string[]
   onBuy: (g: Gift) => void
-}
-
-function GiftCard({ gift, paidPurchases, onBuy }: CardProps) {
-  const myPurchases = paidPurchases.filter(p => p.gift_id === gift.id)
+  index: number
+}) {
   const available = gift.quantity - gift.quantity_bought
-  const isSoldOut = available <= 0
+  const soldOut = available <= 0
 
   return (
-    <div style={{ background: C.white, border: `1px solid ${C.border}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      {gift.photo_url ? (
-        <div style={{ width: '100%', paddingTop: '66.67%', position: 'relative', overflow: 'hidden' }}>
-          <img
-            src={gift.photo_url}
-            alt={gift.name}
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
-          {isSoldOut && (
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(45,74,62,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: C.cream, background: C.green, padding: '8px 20px' }}>Presenteado ✓</span>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div style={{ width: '100%', paddingTop: '50%', position: 'relative', background: C.cream, border: `0 0 1px 0 solid ${C.border}` }}>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.55, delay: index * 0.08 }}
+      style={{ background: '#fff', border: '1px solid #D4E6DC', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}
+    >
+      {/* Foto */}
+      <div style={{ width: '100%', paddingTop: '66.67%', position: 'relative', overflow: 'hidden', background: '#F5F0EA' }}>
+        {gift.photo_url ? (
+          <img src={gift.photo_url} alt={gift.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        ) : (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: '2.5rem' }}>🎁</span>
+            <svg width="48" height="48" viewBox="0 0 32 32" fill="none">
+              <path d="M16 10V28M8 10h16M6 10h20v4H6z" stroke="#D4E6DC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 14v14h12V14" stroke="#D4E6DC" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M16 10c0 0-1-5 3-5s3 3 3 5M16 10c0 0 1-5-3-5s-3 3-3 5" stroke="#C9A86C" strokeWidth="1.3" strokeLinecap="round"/>
+            </svg>
           </div>
-          {isSoldOut && (
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(45,74,62,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: C.cream, background: C.green, padding: '8px 20px' }}>Presenteado ✓</span>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+        {soldOut && (
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(45,74,62,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#F5F0EA', background: '#2D4A3E', padding: '8px 20px' }}>Presenteado ✓</span>
+          </div>
+        )}
+        {gift.quantity > 1 && !soldOut && (
+          <div style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(245,240,234,0.95)', padding: '4px 10px', border: '1px solid #D4E6DC' }}>
+            <span style={{ fontFamily: 'Montserrat', fontSize: '0.6rem', letterSpacing: '0.15em', color: '#6B7563' }}>{available}/{gift.quantity}</span>
+          </div>
+        )}
+      </div>
 
+      {/* Conteúdo */}
       <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', fontWeight: 500, color: C.green, margin: 0 }}>{gift.name}</h3>
+        <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(1.3rem, 3vw, 1.6rem)', fontWeight: 500, color: '#2D4A3E', margin: 0, lineHeight: 1.25 }}>
+          {gift.name}
+        </h3>
 
         {gift.description && (
-          <p style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', color: C.text, lineHeight: 1.7, margin: 0 }}>{gift.description}</p>
+          <p style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', color: '#6B7563', lineHeight: 1.75, margin: 0, flex: 1 }}>
+            {gift.description}
+          </p>
         )}
 
-        <div style={{ marginTop: 'auto', paddingTop: 8 }}>
-          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.5rem', color: C.gold, fontWeight: 500, margin: '0 0 6px' }}>
+        <div style={{ marginTop: 'auto' }}>
+          <div style={{ width: 32, height: 1, background: '#C9A86C', margin: '12px 0' }} />
+
+          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.5rem', color: '#C9A86C', fontWeight: 500, margin: '0 0 8px' }}>
             {gift.type === 'free' ? 'Você decide o valor' : fmtBRL(gift.price ?? 0)}
           </p>
 
-          {gift.quantity > 1 && !isSoldOut && (
-            <p style={{ fontFamily: 'Montserrat', fontSize: '0.7rem', color: C.text, margin: '0 0 10px', letterSpacing: '0.1em' }}>
-              {available} de {gift.quantity} disponíve{available > 1 ? 'is' : 'l'}
-            </p>
-          )}
-
-          {myPurchases.length > 0 && (
-            <div style={{ marginBottom: 12 }}>
-              {myPurchases.map(p => (
-                <p key={p.id} style={{ fontFamily: 'Montserrat', fontSize: '0.72rem', color: C.greenMid, margin: '0 0 2px' }}>
-                  ✓ {p.buyer_name}
+          {buyers.length > 0 && (
+            <div style={{ marginBottom: 10 }}>
+              {buyers.map((name, i) => (
+                <p key={i} style={{ fontFamily: 'Montserrat', fontSize: '0.72rem', color: '#4A7A65', margin: '0 0 2px', letterSpacing: '0.05em' }}>
+                  ✓ {name}
                 </p>
               ))}
             </div>
           )}
 
           <button
-            onClick={() => !isSoldOut && onBuy(gift)}
-            disabled={isSoldOut}
+            onClick={() => !soldOut && onBuy(gift)}
+            disabled={soldOut}
             style={{
-              width: '100%',
-              padding: '12px',
-              background: isSoldOut ? 'transparent' : C.green,
-              color: isSoldOut ? C.text : C.cream,
-              border: `1px solid ${isSoldOut ? C.border : C.green}`,
-              fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.65rem',
-              fontWeight: 700,
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              cursor: isSoldOut ? 'default' : 'pointer',
+              width: '100%', padding: '13px',
+              background: soldOut ? 'transparent' : '#2D4A3E',
+              color: soldOut ? '#6B7563' : '#F5F0EA',
+              border: `1px solid ${soldOut ? '#D4E6DC' : '#2D4A3E'}`,
+              fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem',
+              fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase',
+              cursor: soldOut ? 'default' : 'pointer',
+              transition: 'all 0.2s',
             }}
           >
-            {isSoldOut ? 'Presenteado' : 'Presentear'}
+            {soldOut ? 'Presenteado' : 'Presentear'}
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 // ─── PAGE ────────────────────────────────────────────────────────────────────
 
 export default function GiftListPage() {
-  const navigate = useNavigate()
   const [gifts, setGifts] = useState<Gift[]>([])
   const [purchases, setPurchases] = useState<GiftPurchase[]>([])
   const [loading, setLoading] = useState(true)
-  const [buyingGift, setBuyingGift] = useState<Gift | null>(null)
+  const [buying, setBuying] = useState<Gift | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -280,79 +247,127 @@ export default function GiftListPage() {
     load()
   }, [])
 
-  const totalItems = gifts.length
-  const totalBought = gifts.reduce((s, g) => s + g.quantity_bought, 0)
-  const totalAvailable = gifts.reduce((s, g) => s + g.quantity, 0)
+  const getBuyers = (giftId: string) =>
+    purchases.filter(p => p.gift_id === giftId).map(p => p.buyer_name)
+
+  const totalQ = gifts.reduce((s, g) => s + g.quantity, 0)
+  const boughtQ = gifts.reduce((s, g) => s + g.quantity_bought, 0)
+  const pct = totalQ > 0 ? Math.round((boughtQ / totalQ) * 100) : 0
 
   return (
-    <div style={{ minHeight: '100vh', background: C.cream }}>
-      {/* Header */}
-      <div style={{ background: C.green, padding: '3rem 1.5rem 4rem', textAlign: 'center' }}>
-        <button
-          onClick={() => navigate('/')}
-          style={{ position: 'absolute', left: '1.5rem', top: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(245,240,234,0.6)', fontFamily: 'Montserrat', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 6 }}
-        >
+    <>
+      {/* ── Hero verde ── */}
+      <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 5rem', textAlign: 'center', position: 'relative' }}>
+        <a href="/" style={{ position: 'absolute', top: '1.8rem', left: '1.8rem', fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.5)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
           ← Voltar
-        </button>
+        </a>
 
-        <div style={{ width: 72, height: 72, borderRadius: '50%', border: '1px solid rgba(201,168,108,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', color: C.gold, fontWeight: 500 }}>L&G</span>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9 }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}
+        >
+          <div style={{ width: 72, height: 72, borderRadius: '50%', border: '1px solid rgba(201,168,108,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
+              <path d="M16 10V28M8 10h16M6 10h20v4H6z" stroke="#C9A86C" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 14v14h12V14" stroke="#C9A86C" strokeWidth="1.2" strokeLinecap="round"/>
+              <path d="M16 10c0 0-1-5 3-5s3 3 3 5M16 10c0 0 1-5-3-5s-3 3-3 5" stroke="rgba(201,168,108,0.7)" strokeWidth="1.1" strokeLinecap="round"/>
+            </svg>
+          </div>
 
-        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(201,168,108,0.8)', display: 'block', marginBottom: 12 }}>
-          Nos abençoe com um presente
-        </span>
+          <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.72rem', letterSpacing: '0.45em', textTransform: 'uppercase', color: '#C9A86C' }}>
+            Nos abençoe com um presente
+          </span>
 
-        <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 500, color: C.cream, letterSpacing: '0.04em', margin: '0 0 20px' }}>
-          Lista de Presentes
-        </h1>
+          <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(2.8rem, 7vw, 4.5rem)', fontWeight: 500, color: '#F5F0EA', letterSpacing: '0.04em', margin: 0 }}>
+            Lista de Presentes
+          </h1>
 
-        <div className="diamond-divider" style={{ '--line-color': 'rgba(201,168,108,0.3)' } as React.CSSProperties}><span style={{ background: C.green }} /></div>
+          <div className="diamond-divider"><span /></div>
 
-        <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.85rem', color: 'rgba(245,240,234,0.65)', lineHeight: 1.9, marginTop: 20 }}>
-          Se desejar nos presentear, escolha um item abaixo<br />
-          e utilize o link de pagamento para concluir.
-        </p>
-
-        {!loading && totalItems > 0 && (
-          <p style={{ fontFamily: 'Montserrat', fontSize: '0.72rem', color: 'rgba(201,168,108,0.7)', letterSpacing: '0.15em', marginTop: 16 }}>
-            {totalBought} de {totalAvailable} presente{totalAvailable > 1 ? 's' : ''} já escolhido{totalAvailable > 1 ? 's' : ''}
+          <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.88rem', color: 'rgba(245,240,234,0.65)', lineHeight: 1.9, maxWidth: 480 }}>
+            Se desejar nos presentear, preparamos esta lista com carinho<br />
+            para tornar nosso lar ainda mais especial.
           </p>
-        )}
-      </div>
 
-      {/* Content */}
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '4rem 1.5rem 6rem' }}>
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '4rem' }}>
-            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.2rem', color: C.text, fontStyle: 'italic' }}>Carregando presentes…</p>
-          </div>
-        ) : gifts.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '4rem', background: C.white, border: `1px solid ${C.border}` }}>
-            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', color: C.text, fontStyle: 'italic', margin: 0 }}>A lista de presentes estará disponível em breve.</p>
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 24 }}>
-            {gifts.map(g => (
-              <GiftCard
-                key={g.id}
-                gift={g}
-                paidPurchases={purchases}
-                onBuy={setBuyingGift}
+          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.1rem', fontStyle: 'italic', color: 'rgba(201,168,108,0.8)', margin: '4px 0 0' }}>
+            Luisa & Gabriel · 21 de Abril de 2027
+          </p>
+        </motion.div>
+
+        {/* Barra de progresso */}
+        {!loading && totalQ > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            style={{ marginTop: 40, maxWidth: 400, margin: '40px auto 0' }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.45)' }}>Presenteados</span>
+              <span style={{ fontFamily: 'Montserrat', fontSize: '0.65rem', color: 'rgba(201,168,108,0.7)' }}>{boughtQ} de {totalQ} · {pct}%</span>
+            </div>
+            <div style={{ height: 2, background: 'rgba(245,240,234,0.1)', borderRadius: 1 }}>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${pct}%` }}
+                transition={{ duration: 1.2, delay: 0.8, ease: 'easeOut' }}
+                style={{ height: '100%', background: '#C9A86C', borderRadius: 1 }}
               />
-            ))}
-          </div>
+            </div>
+          </motion.div>
         )}
-      </div>
+      </section>
 
-      {/* Footer */}
-      <div style={{ borderTop: `1px solid ${C.border}`, padding: '2rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.2em', color: C.text, margin: 0 }}>
+      {/* ── Grid de presentes ── */}
+      <section style={{ background: '#F5F0EA', padding: '5rem 1.5rem 7rem' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto' }}>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '5rem' }}>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.3rem', fontStyle: 'italic', color: '#6B7563' }}
+              >
+                Carregando…
+              </motion.p>
+            </div>
+          ) : gifts.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{ background: '#fff', border: '1px solid #D4E6DC', padding: '4rem', textAlign: 'center' }}
+            >
+              <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.5rem', fontStyle: 'italic', color: '#6B7563', margin: 0 }}>
+                A lista de presentes estará disponível em breve.
+              </p>
+            </motion.div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '2rem' }}>
+              {gifts.map((g, i) => (
+                <GiftCard
+                  key={g.id}
+                  gift={g}
+                  buyers={getBuyers(g.id)}
+                  onBuy={setBuying}
+                  index={i}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <div style={{ borderTop: '1px solid #D4E6DC', background: '#F5F0EA', padding: '2rem', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#6B7563', margin: 0 }}>
           Luisa & Gabriel · 21 · 04 · 2027
         </p>
       </div>
 
-      {buyingGift && <BuyModal gift={buyingGift} onClose={() => setBuyingGift(null)} />}
-    </div>
+      {buying && <BuyModal gift={buying} onClose={() => setBuying(null)} />}
+    </>
   )
 }
