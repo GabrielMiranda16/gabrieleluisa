@@ -258,7 +258,7 @@ export default function GiftListPage() {
     <>
       {/* ── Hero verde ── */}
       <section style={{ background: '#2D4A3E', padding: '6rem 1.5rem 5rem', textAlign: 'center', position: 'relative' }}>
-        <a href="/" style={{ position: 'absolute', top: '1.8rem', left: '1.8rem', fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.5)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <a href="/#lista-presentes" style={{ position: 'absolute', top: '1.8rem', left: '1.8rem', fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(245,240,234,0.5)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
           ← Voltar
         </a>
 
