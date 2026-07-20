@@ -44,8 +44,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!purchase) return res.status(200).json({ ok: true })
   if (purchase.payment_status === 'paid') return res.status(200).json({ ok: true })
 
-  // Atualizar status
-  await supabase.from('gift_purchases').update({ payment_status: 'paid' }).eq('id', purchase.id)
+  // Atualizar status só se ainda estiver pendente — evita incremento duplo em retries do Asaas
+  const { data: updated } = await supabase
+    .from('gift_purchases')
+    .update({ payment_status: 'paid' })
+    .eq('id', purchase.id)
+    .eq('payment_status', 'pending')
+    .select()
+  if (!updated || updated.length === 0) return res.status(200).json({ ok: true })
 
   // Incrementar quantidade comprada
   await supabase

@@ -29,6 +29,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (gift.quantity_bought >= gift.quantity)
     return res.status(400).json({ error: 'Presente já foi comprado.' })
 
+  // Valor nunca vem do cliente para presentes de valor fixo — evita manipulação de preço.
+  // Para presentes de valor livre, valida um número positivo e finito dentro de um teto razoável.
+  let safeAmount: number
+  if (gift.type === 'fixed') {
+    safeAmount = Number(gift.price)
+  } else {
+    safeAmount = Number(amount)
+    if (!Number.isFinite(safeAmount) || safeAmount < 1 || safeAmount > 50000) {
+      return res.status(400).json({ error: 'Valor inválido.' })
+    }
+  }
+  if (!Number.isFinite(safeAmount) || safeAmount <= 0) {
+    return res.status(400).json({ error: 'Presente sem valor configurado.' })
+  }
+
   // Criar/encontrar cliente no Asaas
   const existing = await asaas(`/customers?name=${encodeURIComponent(buyer_name)}&limit=1`)
   let customerId: string
@@ -47,7 +62,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const payment = await asaas('/payments', 'POST', {
     customer: customerId,
     billingType,
-    value: Number(amount),
+    value: safeAmount,
     dueDate: dueDate.toISOString().split('T')[0],
     description: `Presente: ${gift.name} — Casamento Luisa & Gabriel`,
   })
@@ -71,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     gift_id,
     buyer_name: buyer_name.trim(),
     buyer_message: buyer_message?.trim() || null,
-    amount: Number(amount),
+    amount: safeAmount,
     payment_method,
     payment_status: 'pending',
     asaas_payment_id: payment.id,
