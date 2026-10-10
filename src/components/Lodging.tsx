@@ -9,9 +9,9 @@ const hotels = [
     distance: '~38 km · ~45 min do local',
     stars: 5,
     phone: '(15) 3261-9900',
-    photo: 'https://boavistasurflodge.com.br/wp-content/uploads/2024/10/24653-jhsf-village-1249.jpg',
+    photo: '/hotel-fasano.jpg',
     map: 'https://maps.google.com/?q=Fasano+Boa+Vista+Surf+Lodge+Porto+Feliz',
-    site: 'https://boavistasurflodge.com.br',
+    site: 'https://fasano.com.br/hotel/boa-vista-surf-lodge/',
   },
   {
     category: 'Premium',
