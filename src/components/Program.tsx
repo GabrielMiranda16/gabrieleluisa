@@ -14,7 +14,7 @@ const steps = [
     ),
   },
   {
-    time: 'A confirmar',
+    time: '17h00',
     label: 'Em seguida',
     title: 'Coquetel',
     description: 'Drinks, canapés e os primeiros momentos como marido e mulher',
@@ -25,7 +25,7 @@ const steps = [
     ),
   },
   {
-    time: 'A confirmar',
+    time: '19h30',
     label: 'Depois',
     title: 'Jantar',
     description: 'Banquete de casamento com menu especialmente preparado para essa noite',
@@ -41,7 +41,7 @@ const steps = [
     ),
   },
   {
-    time: 'A confirmar',
+    time: '21h30',
     label: 'Para fechar',
     title: 'Festa',
     description: 'Música, dança e muita alegria — comemoremos juntos até o amanhecer',
