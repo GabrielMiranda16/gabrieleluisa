@@ -87,28 +87,12 @@ export default function RSVPGifts() {
           <div className="diamond-divider" style={{ '--line-color': 'rgba(201,168,108,0.4)' } as React.CSSProperties}><span /></div>
 
           <p style={{ fontFamily: 'Montserrat', fontSize: '0.88rem', color: 'rgba(245,240,234,0.75)', lineHeight: 1.9, fontWeight: 400 }}>
-            Sua presença é o melhor presente que nos poderiam dar.<br />
-            Confirme até 20 de março de 2027.
+            Sua presença é o melhor presente que poderíamos receber.
           </p>
 
-          <button
-            disabled
-            style={{
-              marginTop: 8,
-              fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              color: 'rgba(245,240,234,0.35)',
-              background: 'none',
-              border: '1px solid rgba(245,240,234,0.2)',
-              padding: '14px 40px',
-              cursor: 'not-allowed',
-            }}
-          >
-            Em breve
-          </button>
+          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.35rem', fontStyle: 'italic', color: '#F5F0EA', lineHeight: 1.6, fontWeight: 400, maxWidth: 520 }}>
+            Não se preocupe com a confirmação: nossa assessoria entrará em contato com cada convidado para confirmar a presença.
+          </p>
         </motion.div>
       </section>
     </>
