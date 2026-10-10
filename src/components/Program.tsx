@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 
 const steps = [
   {
-    time: '16h00',
+    time: '15h00',
     label: 'Início',
     title: 'Cerimônia',
     description: 'Troca de alianças e votos de amor eterno',

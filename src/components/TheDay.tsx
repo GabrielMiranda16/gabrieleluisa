@@ -58,7 +58,7 @@ export default function TheDay() {
                 21 de Abril de 2027
               </p>
               <p style={{ fontFamily: 'Montserrat', fontSize: '0.8rem', letterSpacing: '0.25em', color: '#6B7563', fontWeight: 400 }}>
-                16H00
+                15H00
               </p>
             </div>
 
