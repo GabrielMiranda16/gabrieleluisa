@@ -29,7 +29,7 @@ export default function Footer() {
         </p>
 
         <a
-          href="https://wa.me/?text=Luisa%20%26%20Gabriel%20est%C3%A3o%20se%20casando!%20%F0%9F%92%8D%0A21%20de%20abril%20de%202027%20%C2%B7%20Maison%20Reserva%0AConfira%20o%20site%20do%20casamento%3A%20https%3A%2F%2Fgabrieleluisa.com.br"
+          href="https://wa.me/?text=Luisa%20%26%20Gabriel%20est%C3%A3o%20se%20casando!%0A21%20de%20abril%20de%202027%20%C2%B7%20Maison%20Reserva%0AConfira%20o%20site%20do%20casamento%3A%20https%3A%2F%2Fgabrieleluisa.com.br"
           target="_blank"
           rel="noopener noreferrer"
           style={{
